@@ -1,66 +1,63 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Chronicle 
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Version-Controlled Document Collaboration (Proof of Concept)
 
-## About Laravel
+## Overview
+This project is a **proof-of-concept** demonstrating **Event Sourcing** and **CQRS** in Laravel, using **Laravel Verbs** for event sourcing and **FilamentPHP** for the frontend. The application allows multiple users to **collaborate in real-time** on a shared document, with all edits stored as events.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Each document:
+- **Refreshes every hour** and starts with a predefined introductory text.
+- Allows **live collaboration**, where users see changes as others type.
+- **Locks after an hour**, creating a new document while preserving the previous versions.
+- Enables users to **replay document history** to visualize event sourcing in action.
+- Displays an event log with options to **pause, rewind, and fast-forward** through changes.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Goals
+- **Showcase event sourcing and CQRS** with a practical, real-time example.
+- Provide an interactive way for users to **see and understand events**.
+- Keep the implementation **simple and accessible**, avoiding unnecessary complexity.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Features
+### Document Editing
+- Users can **edit any part of the document** using Filament’s Markdown editor.
+- **Live collaboration** with real-time updates using WebSockets.
+- Documents are stored as **plain text**.
 
-## Learning Laravel
+### User System
+- Users sign up with **only a username and password** (no email required, but optional).
+- Usernames must be unique.
+- Future expansions may include reputation/history tracking.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Event Replay & History
+- Users can **replay past documents** to see how they evolved over time.
+- A **pause, rewind, and fast-forward feature** enables event playback.
+- A **filtering system** allows users to focus on specific types of events.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Document Locking & Versioning
+- After **one hour**, a document becomes **read-only**.
+- Users can still **view and replay** events of locked documents.
+- Only documents with user activity (beyond the initial event) are stored.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### FilamentPHP Panels
+1. **Unauthenticated Panel**: Users can view history and replay past documents.
+2. **Index Panel** (authenticated): Users can participate in the latest document and view past versions.
+3. **Admin Panel** (authenticated): Provides moderation tools, analytics, and document management.
 
-## Laravel Sponsors
+### Real-Time Updates
+- **Livewire** will handle real-time form interactions.
+- **WebSockets** will broadcast events instantly.
+- **Alpine.js** may be used where beneficial.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Technical Stack
+- **Laravel 11**
+- **Laravel Verbs** (for event sourcing)
+- **FilamentPHP** (for admin and UI management)
+- **Livewire** (for real-time interactions)
+- **WebSockets** (for instant updates)
+- **Plain text storage** for documents
 
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Future Enhancements
+- **User reputation tracking** (e.g., contributions, consistency)
+- **Conflict resolution** (if necessary, but not the main focus)
+- **Interactive event visualization** (within Livewire/Filament limitations)
+- **Admin dashboard metrics**
