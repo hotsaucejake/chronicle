@@ -6,6 +6,8 @@ use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
+use Glhd\Bits\Database\HasSnowflakes;
+use Glhd\Bits\Snowflake;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -15,6 +17,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasFactory;
+    use HasSnowflakes;
     use Notifiable;
 
     /**
@@ -23,7 +26,7 @@ class User extends Authenticatable implements FilamentUser, HasName
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
     ];
@@ -46,9 +49,15 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected function casts(): array
     {
         return [
+            'id' => Snowflake::class,
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'username';
     }
 
     public function canAccessPanel(Panel $panel): bool
