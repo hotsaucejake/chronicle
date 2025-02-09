@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Unauthenticated\Pages\Login;
+use App\Filament\Unauthenticated\Pages\Register;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -26,7 +28,8 @@ class IndexPanelProvider extends PanelProvider
             ->default()
             ->id('index')
             ->path('index')
-            ->login()
+            ->login(Login::class)
+            ->registration(Register::class)
             ->colors([
                 'primary' => Color::Amber,
             ])

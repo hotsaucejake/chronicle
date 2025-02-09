@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Enums\FilamentPanelEnum;
+use App\Filament\Unauthenticated\Pages\Login;
+use App\Filament\Unauthenticated\Pages\Register;
 use Exception;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -29,6 +31,8 @@ class UnauthenticatedPanelProvider extends PanelProvider
         return $panel
             ->id(FilamentPanelEnum::UNAUTHENTICATED->value)
             ->path('')
+            ->login(Login::class)
+            ->registration(Register::class)
             ->colors([
                 'primary' => Color::Blue,
                 'info' => Color::Cyan,
