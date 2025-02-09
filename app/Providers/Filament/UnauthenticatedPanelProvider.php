@@ -8,6 +8,7 @@ use App\Filament\Unauthenticated\Pages\Register;
 use Exception;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -43,6 +44,26 @@ class UnauthenticatedPanelProvider extends PanelProvider
             ])
             ->maxContentWidth('full')
             ->topNavigation()
+            ->navigationItems([
+                NavigationItem::make('Login')
+                    ->label('Login')
+                    ->url('/login')
+                    ->icon('heroicon-o-key')
+                    ->sort(2)
+                    ->visible(fn () => !auth()->check()),
+                NavigationItem::make('Register')
+                    ->label('Register')
+                    ->url('/register')
+                    ->icon('heroicon-o-clipboard-document-check')
+                    ->sort(2)
+                    ->visible(fn () => !auth()->check()),
+                NavigationItem::make('Index')
+                    ->label('Index')
+                    ->url(FilamentPanelEnum::INDEX->value)
+                    ->icon('heroicon-o-square-3-stack-3d')
+                    ->sort(3)
+                    ->visible(fn () => auth()->check()),
+            ])
             ->breadcrumbs(false)
             ->discoverResources(in: app_path('Filament/Unauthenticated/Resources'), for: 'App\\Filament\\Unauthenticated\\Resources')
             ->discoverPages(in: app_path('Filament/Unauthenticated/Pages'), for: 'App\\Filament\\Unauthenticated\\Pages')
