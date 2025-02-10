@@ -5,7 +5,6 @@ namespace Database\Factories;
 use App\Models\Document;
 use App\Models\DocumentRevision;
 use App\Models\User;
-use Glhd\Bits\Factories\SnowflakeFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

@@ -51,12 +51,13 @@ class DocumentService implements DocumentServiceInterface
 
             $version = $this->documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($data->document_id) + 1;
 
-            $documentRevisionData = DocumentRevisionCreationData::from(
-                document_id: $data->document_id,
-                version: $version,
-                content: $data->new_content,
-                edited_at: now(),
-            );
+            $documentRevisionData = DocumentRevisionCreationData::from([
+                'document_id' => $data->document_id,
+                'version' => $version,
+                'content' => $data->new_content,
+                'edited_by_user_id' => $data->editor_id,
+                'edited_at' => now(),
+            ]);
 
             $this->documentRevisionService->createDocumentRevision($documentRevisionData);
 

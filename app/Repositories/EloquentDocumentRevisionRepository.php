@@ -8,7 +8,6 @@ use Glhd\Bits\Snowflake;
 
 class EloquentDocumentRevisionRepository implements DocumentRevisionRepositoryInterface
 {
-
     public function create(array $data): DocumentRevision
     {
         return DocumentRevision::create($data);

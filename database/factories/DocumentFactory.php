@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Document;
-use Glhd\Bits\Factories\SnowflakeFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

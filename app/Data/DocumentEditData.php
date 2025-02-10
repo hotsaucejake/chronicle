@@ -20,6 +20,6 @@ class DocumentEditData extends Data
         public int $previous_version,
 
         #[FromAuthenticatedUserProperty('id')]
-        public int $editor_id
+        public Snowflake $editor_id
     ) {}
 }
