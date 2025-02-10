@@ -6,6 +6,7 @@ use App\Contracts\Repositories\DocumentRevisionRepositoryInterface;
 use App\Contracts\Services\DocumentRevisionServiceInterface;
 use App\Data\DocumentRevisionCreationData;
 use App\Models\DocumentRevision;
+use Glhd\Bits\Snowflake;
 use Illuminate\Support\Facades\DB;
 
 class DocumentRevisionService implements DocumentRevisionServiceInterface
@@ -19,7 +20,7 @@ class DocumentRevisionService implements DocumentRevisionServiceInterface
         });
     }
 
-    public function getMaxVersionDocumentRevisionByDocumentId(int $documentId): int
+    public function getMaxVersionDocumentRevisionByDocumentId(Snowflake $documentId): int
     {
         return $this->documentRevisionRepository->getMaxVersionForDocument($documentId);
     }

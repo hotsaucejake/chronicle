@@ -3,13 +3,14 @@
 namespace App\Data;
 
 use Carbon\CarbonImmutable;
+use Glhd\Bits\Snowflake;
 use Spatie\LaravelData\Attributes\FromAuthenticatedUserProperty;
 use Spatie\LaravelData\Data;
 
 class DocumentRevisionCreationData extends Data
 {
     public function __construct(
-        public int $document_id,
+        public Snowflake $document_id,
         public int $version,
         public string $content,
 

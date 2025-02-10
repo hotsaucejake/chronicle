@@ -5,18 +5,19 @@ namespace App\Events;
 use App\Contracts\Services\DocumentServiceInterface;
 use App\Data\DocumentCreationData;
 use App\States\DocumentState;
+use Glhd\Bits\Snowflake;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
 use Thunk\Verbs\Event;
 
 class DocumentCreated extends Event
 {
     #[StateId(DocumentState::class)]
-    public int $document_id;
+    public Snowflake $document_id;
 
     // The initial content for the document.
     public string $initial_content;
 
-    public function __construct(int $document_id)
+    public function __construct(Snowflake $document_id)
     {
         $this->document_id = $document_id;
         $this->initial_content = config('chronicle.initial_document_text');
