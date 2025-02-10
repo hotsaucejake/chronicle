@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\DocumentRevisionRepositoryInterface;
 use App\Models\DocumentRevision;
+use Glhd\Bits\Snowflake;
 
 class EloquentDocumentRevisionRepository implements DocumentRevisionRepositoryInterface
 {
@@ -13,7 +14,7 @@ class EloquentDocumentRevisionRepository implements DocumentRevisionRepositoryIn
         return DocumentRevision::create($data);
     }
 
-    public function getMaxVersionForDocument(int $documentId): int
+    public function getMaxVersionForDocument(Snowflake $documentId): int
     {
         return DocumentRevision::where('document_id', $documentId)->max('version') ?? 0;
     }

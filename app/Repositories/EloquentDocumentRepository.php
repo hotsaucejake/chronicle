@@ -4,10 +4,11 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\DocumentRepositoryInterface;
 use App\Models\Document;
+use Glhd\Bits\Snowflake;
 
 class EloquentDocumentRepository implements DocumentRepositoryInterface
 {
-    public function find(int $id): Document
+    public function find(Snowflake $id): Document
     {
         return Document::findOrFail($id);
     }
