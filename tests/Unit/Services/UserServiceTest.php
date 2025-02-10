@@ -12,7 +12,6 @@ beforeEach(function () {
 it('registers a user and hashes the password', function () {
     // Create a RegisterUserData instance.
     $data = RegisterUserData::from([
-        // You can omit the id if your Snowflake trait auto-generates it.
         'username' => 'testuser',
         'email' => 'testuser@example.com',
         'password' => 'password',

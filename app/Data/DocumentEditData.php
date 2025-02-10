@@ -2,7 +2,6 @@
 
 namespace App\Data;
 
-use Glhd\Bits\Snowflake;
 use Spatie\LaravelData\Attributes\FromAuthenticatedUserProperty;
 use Spatie\LaravelData\Attributes\Validation\Required;
 use Spatie\LaravelData\Data;
@@ -11,7 +10,7 @@ class DocumentEditData extends Data
 {
     public function __construct(
         #[Required]
-        public Snowflake $document_id,
+        public string $document_id,
 
         #[Required]
         public string $new_content,
@@ -19,7 +18,7 @@ class DocumentEditData extends Data
         #[Required]
         public int $previous_version,
 
-        #[FromAuthenticatedUserProperty('id')]
-        public Snowflake $editor_id
+        #[FromAuthenticatedUserProperty(property: 'id')]
+        public string $editor_id
     ) {}
 }

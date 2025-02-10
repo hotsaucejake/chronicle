@@ -5,21 +5,20 @@ namespace App\Events;
 use App\Contracts\Services\DocumentServiceInterface;
 use App\Data\DocumentEditData;
 use App\States\DocumentState;
-use Glhd\Bits\Snowflake;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
 use Thunk\Verbs\Event;
 
 class DocumentEdited extends Event
 {
     #[StateId(DocumentState::class)]
-    public Snowflake $document_id;
+    public string $document_id;
 
     public string $new_content;
 
     public int $previous_version; // passed from the client for optimistic concurrency
 
     public function __construct(
-        Snowflake $document_id,
+        string $document_id,
         string $new_content,
         int $previous_version
     ) {
@@ -42,11 +41,11 @@ class DocumentEdited extends Event
 
     public function handle(DocumentServiceInterface $documentService): void
     {
-        $edit_data = DocumentEditData::from(
-            document_id: $this->document_id,
-            new_content: $this->new_content,
-            previous_version: $this->previous_version,
-        );
+        $edit_data = DocumentEditData::from([
+            'document_id' => $this->document_id,
+            'new_content' => $this->new_content,
+            'previous_version' => $this->previous_version,
+        ]);
 
         $documentService->updateDocument($edit_data);
     }

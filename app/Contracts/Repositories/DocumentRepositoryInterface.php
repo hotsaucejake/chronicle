@@ -3,11 +3,10 @@
 namespace App\Contracts\Repositories;
 
 use App\Models\Document;
-use Glhd\Bits\Snowflake;
 
 interface DocumentRepositoryInterface
 {
-    public function find(Snowflake $id): Document;
+    public function find(string $id): Document;
 
     public function create(array $data): Document;
 
