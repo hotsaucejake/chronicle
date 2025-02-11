@@ -8,8 +8,11 @@ use App\Contracts\Services\DocumentServiceInterface;
 use App\Data\DocumentCreationData;
 use App\Data\DocumentEditData;
 use App\Data\DocumentRevisionCreationData;
+use App\Events\DocumentCreated;
+use App\Events\DocumentLocked;
 use App\Models\Document;
 use Illuminate\Support\Facades\DB;
+use function Symfony\Component\Translation\t;
 
 class DocumentService implements DocumentServiceInterface
 {
@@ -22,13 +25,6 @@ class DocumentService implements DocumentServiceInterface
     {
         return DB::transaction(function () use ($data) {
             $payload = $data->toArray();
-
-            if (empty($payload['content'])) {
-                $payload['content'] = config('chronicle.initial_document_text');
-            }
-
-            $payload['is_locked'] = false;
-            $payload['expires_at'] = now()->addHours(config('chronicle.document_expiration'));
 
             return $this->documentRepository->create($payload);
         });
@@ -65,7 +61,7 @@ class DocumentService implements DocumentServiceInterface
         });
     }
 
-    public function lockDocument(string $document_id): bool
+    public function lockDocumentById(string $document_id): bool
     {
         return DB::transaction(function () use ($document_id) {
             $document = $this->documentRepository->find($document_id);
@@ -74,9 +70,43 @@ class DocumentService implements DocumentServiceInterface
                 return false;
             }
 
+            $updated = $this->documentRepository->update($document, [
+                'is_locked' => true,
+            ]);
+
+            return $updated->is_locked;
+        });
+    }
+
+    public function lockDocument(Document $document): bool
+    {
+        return DB::transaction(function () use ($document) {
+            if ($document->is_locked) {
+                return false;
+            }
+
             return $this->documentRepository->update($document, [
                 'is_locked' => true,
             ]);
         });
+    }
+
+    public function lockOpenExpiredDocuments(): void
+    {
+        $this->documentRepository
+            ->retrieveOpenExpiredDocuments()
+            ->each(function (Document $document) {
+                DocumentLocked::fire((string) $document->id);
+            });
+    }
+
+    public function createNewOpenDocument(): void
+    {
+        DocumentCreated::fire(document_id: (string) snowflake_id());
+    }
+
+    public function livingDocumentsCount(): int
+    {
+        return $this->documentRepository->livingDocumentsCount();
     }
 }

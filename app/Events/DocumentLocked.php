@@ -30,6 +30,6 @@ class DocumentLocked extends Event
 
     public function handle(DocumentServiceInterface $documentService): void
     {
-        $documentService->lockDocument($this->document_id);
+        $documentService->lockDocumentById($this->document_id);
     }
 }

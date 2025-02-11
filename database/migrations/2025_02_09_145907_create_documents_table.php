@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->snowflakeId();
-            $table->text('content');
+            $table->text('content')->nullable();
             $table->boolean('is_locked')->default(false);
             $table->timestamp('expires_at')->nullable();
 

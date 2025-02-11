@@ -33,7 +33,7 @@ class DocumentCreated extends Event
 
     public function handle(DocumentServiceInterface $documentService): void
     {
-        $creationData = new DocumentCreationData($this->initial_content);
+        $creationData = new DocumentCreationData($this->initial_content, now()->addHours(config('chronicle.document_expiration')));
 
         $documentService->createDocument($creationData);
     }

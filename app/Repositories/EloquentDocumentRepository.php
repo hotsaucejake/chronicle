@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\DocumentRepositoryInterface;
 use App\Models\Document;
+use Illuminate\Database\Eloquent\Builder;
 
 class EloquentDocumentRepository implements DocumentRepositoryInterface
 {
@@ -22,5 +23,17 @@ class EloquentDocumentRepository implements DocumentRepositoryInterface
         $document->update($data);
 
         return $document->fresh();
+    }
+
+    public function retrieveOpenExpiredDocuments(): Builder
+    {
+        return Document::whereDate('expires_at', '<=', now())
+            ->where('is_locked', false);
+    }
+
+    public function livingDocumentsCount(): int
+    {
+        return Document::where('is_locked', false)
+            ->count();
     }
 }

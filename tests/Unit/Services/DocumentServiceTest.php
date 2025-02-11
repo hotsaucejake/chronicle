@@ -12,14 +12,12 @@ beforeEach(function () {
     $this->documentService = app(DocumentServiceInterface::class);
 });
 
-it('creates a document with default content if none is provided', function () {
+it('creates an empty document', function () {
     // Create a DocumentCreationData instance with null content.
     $creationData = new DocumentCreationData(null);
     $document = $this->documentService->createDocument($creationData);
 
-    expect($document->content)->toEqual(config('chronicle.initial_document_text'))
-        ->and($document->is_locked)->toBeFalse()
-        ->and($document->expires_at)->toBeInstanceOf(Carbon::class);
+    expect($document->content)->toBeNull();
 });
 
 it('updates a document and creates a new revision', function () {
