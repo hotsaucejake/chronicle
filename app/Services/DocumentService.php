@@ -64,4 +64,19 @@ class DocumentService implements DocumentServiceInterface
             return $newDocument;
         });
     }
+
+    public function lockDocument(string $document_id): bool
+    {
+        return DB::transaction(function () use ($document_id) {
+            $document = $this->documentRepository->find($document_id);
+
+            if ($document->is_locked) {
+                return false;
+            }
+
+            return $this->documentRepository->update($document, [
+                'is_locked' => true,
+            ]);
+        });
+    }
 }

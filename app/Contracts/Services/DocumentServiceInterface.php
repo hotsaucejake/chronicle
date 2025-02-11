@@ -11,4 +11,6 @@ interface DocumentServiceInterface
     public function createDocument(DocumentCreationData $data): Document;
 
     public function updateDocument(DocumentEditData $data): Document;
+
+    public function lockDocument(string $document_id): bool;
 }
