@@ -49,7 +49,6 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected function casts(): array
     {
         return [
-            'id' => Snowflake::class,
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];

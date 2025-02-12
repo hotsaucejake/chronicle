@@ -10,22 +10,11 @@ use Thunk\Verbs\Event;
 
 class DocumentEdited extends Event
 {
-    #[StateId(DocumentState::class)]
-    public string $document_id;
-
-    public string $new_content;
-
-    public int $previous_version; // passed from the client for optimistic concurrency
-
     public function __construct(
-        string $document_id,
-        string $new_content,
-        int $previous_version
-    ) {
-        $this->document_id = $document_id;
-        $this->new_content = $new_content;
-        $this->previous_version = $previous_version;
-    }
+        #[StateId(DocumentState::class)] public int $document_id,
+        public string $new_content,
+        public int $previous_version // passed from the client for optimistic concurrency
+    ) {}
 
     public function validate(DocumentState $state): void
     {

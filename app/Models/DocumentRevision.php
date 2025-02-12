@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Database\Factories\DocumentRevisionFactory;
 use Glhd\Bits\Database\HasSnowflakes;
-use Glhd\Bits\Snowflake;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,10 +26,7 @@ class DocumentRevision extends Model
     protected function casts(): array
     {
         return [
-            'id' => Snowflake::class,
-            'document_id' => Snowflake::class,
             'version' => 'integer',
-            'edited_by_user_id' => Snowflake::class,
             'edited_at' => 'datetime',
         ];
     }

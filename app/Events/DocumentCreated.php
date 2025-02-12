@@ -11,30 +11,25 @@ use Thunk\Verbs\Event;
 class DocumentCreated extends Event
 {
     #[StateId(DocumentState::class)]
-    public string $document_id;
-
-    // The initial content for the document.
-    public string $initial_content;
-
-    public function __construct(string $document_id)
-    {
-        $this->document_id = $document_id;
-        $this->initial_content = config('chronicle.initial_document_text');
-    }
+    public ?int $document_id = null;
 
     public function validate(DocumentState $state): void {}
 
     public function apply(DocumentState $state): void
     {
-        $state->content = $this->initial_content;
+        $state->content = config('chronicle.initial_document_text', 'New Content');
         $state->is_locked = false;
-        $state->expires_at = now()->addHours(config('chronicle.document_expiration'));
+        $state->expires_at = now()->addHours(config('chronicle.document_expiration', 1));
     }
 
-    public function handle(DocumentServiceInterface $documentService): void
-    {
-        $creationData = new DocumentCreationData($this->initial_content, now()->addHours(config('chronicle.document_expiration')));
-
-        $documentService->createDocument($creationData);
+    public function handle(
+        DocumentState $state,
+        DocumentServiceInterface $documentService,
+    ): void {
+        $documentService->createDocument(new DocumentCreationData(
+            content: $state->content,
+            is_locked: $state->is_locked,
+            expires_at: $state->expires_at,
+        ));
     }
 }

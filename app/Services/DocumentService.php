@@ -11,7 +11,9 @@ use App\Data\DocumentRevisionCreationData;
 use App\Events\DocumentCreated;
 use App\Events\DocumentLocked;
 use App\Models\Document;
+use App\States\DocumentState;
 use Illuminate\Support\Facades\DB;
+use Thunk\Verbs\Facades\Verbs;
 use function Symfony\Component\Translation\t;
 
 class DocumentService implements DocumentServiceInterface
@@ -23,11 +25,9 @@ class DocumentService implements DocumentServiceInterface
 
     public function createDocument(DocumentCreationData $data): Document
     {
-        return DB::transaction(function () use ($data) {
-            $payload = $data->toArray();
+        $payload = $data->toArray();
 
-            return $this->documentRepository->create($payload);
-        });
+        return $this->documentRepository->create($payload);
     }
 
     public function updateDocument(DocumentEditData $data): Document
@@ -96,13 +96,13 @@ class DocumentService implements DocumentServiceInterface
         $this->documentRepository
             ->retrieveOpenExpiredDocuments()
             ->each(function (Document $document) {
-                DocumentLocked::fire((string) $document->id);
+                DocumentLocked::fire(document_id: $document->id);
             });
     }
 
     public function createNewOpenDocument(): void
     {
-        DocumentCreated::fire(document_id: (string) snowflake_id());
+        DocumentCreated::fire();
     }
 
     public function livingDocumentsCount(): int

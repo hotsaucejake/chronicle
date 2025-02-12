@@ -8,7 +8,7 @@ use Thunk\Verbs\State;
 class DocumentState extends State
 {
     // The current content of the document
-    public string $content = '';
+    public ?string $content = '';
 
     // Indicates whether the document is locked for editing
     public bool $is_locked = false;

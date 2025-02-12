@@ -4,8 +4,8 @@ namespace App\Contracts\Services;
 
 use App\Data\DocumentCreationData;
 use App\Data\DocumentEditData;
-use App\Events\DocumentCreated;
 use App\Models\Document;
+use App\States\DocumentState;
 
 interface DocumentServiceInterface
 {

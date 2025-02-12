@@ -30,11 +30,8 @@ class Document extends Model
     protected function casts(): array
     {
         return [
-            'id' => Snowflake::class,
             'is_locked' => 'boolean',
             'expires_at' => 'datetime',
-            'first_edit_user_id' => Snowflake::class,
-            'last_edit_user_id' => Snowflake::class,
             'unique_editor_count' => 'integer',
             'edit_count' => 'integer',
             'last_edited_at' => 'datetime',
