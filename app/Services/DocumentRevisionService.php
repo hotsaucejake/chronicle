@@ -23,4 +23,9 @@ class DocumentRevisionService implements DocumentRevisionServiceInterface
     {
         return $this->documentRevisionRepository->getMaxVersionForDocument($documentId);
     }
+
+    public function getUniqueEditorCountByDocumentId(string $documentId): int
+    {
+        return $this->documentRevisionRepository->getUniqueEditorCountByDocumentId($documentId);
+    }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->text('content');
 
-            $table->foreignId('edited_by_user_id')->constrained('users');
+            $table->foreignId('edited_by_user_id')->index()->constrained('users');
 
             $table->timestamp('edited_at')->nullable();
 

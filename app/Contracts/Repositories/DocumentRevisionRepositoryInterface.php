@@ -9,4 +9,6 @@ interface DocumentRevisionRepositoryInterface
     public function create(array $data): DocumentRevision;
 
     public function getMaxVersionForDocument(string $documentId): int;
+
+    public function getUniqueEditorCountByDocumentId(string $documentId): int;
 }

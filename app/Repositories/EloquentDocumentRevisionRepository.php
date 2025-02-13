@@ -16,4 +16,11 @@ class EloquentDocumentRevisionRepository implements DocumentRevisionRepositoryIn
     {
         return DocumentRevision::where('document_id', $documentId)->max('version') ?? 0;
     }
+
+    public function getUniqueEditorCountByDocumentId(string $documentId): int
+    {
+        return DocumentRevision::where('document_id', $documentId)
+            ->distinct()
+            ->count('edited_by_user_id');
+    }
 }

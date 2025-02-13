@@ -11,10 +11,7 @@ use App\Data\DocumentRevisionCreationData;
 use App\Events\DocumentCreated;
 use App\Events\DocumentLocked;
 use App\Models\Document;
-use App\States\DocumentState;
 use Illuminate\Support\Facades\DB;
-use Thunk\Verbs\Facades\Verbs;
-use function Symfony\Component\Translation\t;
 
 class DocumentService implements DocumentServiceInterface
 {
@@ -43,6 +40,11 @@ class DocumentService implements DocumentServiceInterface
                 'last_edited_at' => now(),
             ];
 
+            // If this is the first edit, set first_edit_user_id.
+            if (is_null($document->first_edit_user_id)) {
+                $updateData['first_edit_user_id'] = $data->editor_id;
+            }
+
             $newDocument = $this->documentRepository->update($document, $updateData);
 
             $version = $this->documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($data->document_id) + 1;
@@ -57,7 +59,14 @@ class DocumentService implements DocumentServiceInterface
 
             $this->documentRevisionService->createDocumentRevision($documentRevisionData);
 
-            return $newDocument;
+            // Update unique_editor_count:
+            // Query the revisions table for distinct editors for this document.
+            $uniqueEditorsCount = $this->documentRevisionService->getUniqueEditorCountByDocumentId($data->document_id);
+
+            // Update the document projection with the new count.
+            return $this->documentRepository->update($newDocument, [
+                'unique_editor_count' => $uniqueEditorsCount,
+            ]);
         });
     }
 

@@ -19,6 +19,7 @@ it('simulates a full document workflow', function () {
 
     // Create a user and act as that user.
     $user = User::factory()->create();
+    $user2 = User::factory()->create();
     $this->actingAs($user);
 
     // 1. Create a new document by firing DocumentCreated.
@@ -36,25 +37,45 @@ it('simulates a full document workflow', function () {
         document_id: $document->id,
         new_content: 'First edit content',
         previous_version: $documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($document->id) + 1
-        // previous_version: 1
     );
     Verbs::commit();
 
     $document = Document::find($document->id);
     expect($document->content)->toEqual('First edit content')
-        ->and($document->edit_count)->toEqual(1);
+        ->and($document->edit_count)->toEqual(1)
+        ->and($document->first_edit_user_id)->toEqual($user->id)
+        ->and($document->last_edit_user_id)->toEqual($user->id)
+        ->and($document->unique_editor_count)->toEqual(1);
 
     DocumentEdited::fire(
         document_id: $document->id,
         new_content: 'Second edit content',
         previous_version: $documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($document->id) + 1
-    // previous_version: 1
     );
     Verbs::commit();
 
     $document = Document::find($document->id);
     expect($document->content)->toEqual('Second edit content')
-        ->and($document->edit_count)->toEqual(2);
+        ->and($document->edit_count)->toEqual(2)
+        ->and($document->first_edit_user_id)->toEqual($user->id)
+        ->and($document->last_edit_user_id)->toEqual($user->id)
+        ->and($document->unique_editor_count)->toEqual(1);
+
+    $this->actingAs($user2);
+
+    DocumentEdited::fire(
+        document_id: $document->id,
+        new_content: 'Third edit content',
+        previous_version: $documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($document->id) + 1
+    );
+    Verbs::commit();
+
+    $document = Document::find($document->id);
+    expect($document->content)->toEqual('Third edit content')
+        ->and($document->edit_count)->toEqual(3)
+        ->and($document->first_edit_user_id)->toEqual($user->id)
+        ->and($document->last_edit_user_id)->toEqual($user2->id)
+        ->and($document->unique_editor_count)->toEqual(2);
 
     // 3. Simulate expiration by updating expires_at to the past.
     $document->update(['expires_at' => Carbon::now()->subMinute()]);
