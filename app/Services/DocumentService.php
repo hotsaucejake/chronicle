@@ -87,19 +87,6 @@ class DocumentService implements DocumentServiceInterface
         });
     }
 
-    public function lockDocument(Document $document): bool
-    {
-        return DB::transaction(function () use ($document) {
-            if ($document->is_locked) {
-                return false;
-            }
-
-            return $this->documentRepository->update($document, [
-                'is_locked' => true,
-            ]);
-        });
-    }
-
     public function lockOpenExpiredDocuments(): void
     {
         $this->documentRepository

@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Document;
+use App\Contracts\Services\DocumentServiceInterface;
 use App\States\DocumentState;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
 use Thunk\Verbs\Event;
@@ -24,10 +24,8 @@ class DocumentLocked extends Event
         $state->is_locked = true;
     }
 
-    public function handle(DocumentState $state): void
+    public function handle(DocumentState $state, DocumentServiceInterface $documentService): void
     {
-        Document::find($this->document_id)->update([
-            'is_locked' => $this->state()->is_locked,
-        ]);
+        $documentService->lockDocumentById($this->document_id);
     }
 }

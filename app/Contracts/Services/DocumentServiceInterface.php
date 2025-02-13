@@ -5,7 +5,6 @@ namespace App\Contracts\Services;
 use App\Data\DocumentCreationData;
 use App\Data\DocumentEditData;
 use App\Models\Document;
-use App\States\DocumentState;
 
 interface DocumentServiceInterface
 {
@@ -14,8 +13,6 @@ interface DocumentServiceInterface
     public function updateDocument(DocumentEditData $data): Document;
 
     public function lockDocumentById(string $document_id): bool;
-
-    public function lockDocument(Document $document): bool;
 
     public function lockOpenExpiredDocuments(): void;
 
