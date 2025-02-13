@@ -29,7 +29,7 @@ class DocumentResource extends Resource
                     ->label(function (Document $record) {
                         return $record->exists
                             ? $record->id
-                            : 'Create Document';
+                            : '';
                     })
                     ->columnSpanFull()
                     ->disableToolbarButtons([
@@ -92,7 +92,7 @@ class DocumentResource extends Resource
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make()
-                ->visible(fn (Document $record) => !$record->is_locked),
+                    ->visible(fn (Document $record) => !$record->is_locked),
             ])
             // TODO: make policy to prevent editing a locked document
             ->recordUrl(fn (Document $record) => $record->is_locked ? null : EditDocument::getUrl([$record]));

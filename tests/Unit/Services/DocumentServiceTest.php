@@ -63,9 +63,9 @@ it('updates a document and creates a new revision', function () {
 });
 
 it('locks a document by id', function () {
-   $document = Document::factory()->create([
-       'is_locked' => false,
-   ]);
+    $document = Document::factory()->create([
+        'is_locked' => false,
+    ]);
 
     $isLocked = $this->documentService->lockDocumentById($document->id);
 
