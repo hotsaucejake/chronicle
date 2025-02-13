@@ -75,6 +75,10 @@ class DocumentService implements DocumentServiceInterface
         return DB::transaction(function () use ($document_id) {
             $document = $this->documentRepository->find($document_id);
 
+            if (!$document) {
+                return false;
+            }
+
             if ($document->is_locked) {
                 return false;
             }

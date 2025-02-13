@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 interface DocumentRepositoryInterface
 {
-    public function find(string $id): Document;
+    public function find(string $id): ?Document;
 
     public function create(array $data): Document;
 

@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 class EloquentDocumentRepository implements DocumentRepositoryInterface
 {
-    public function find(string $id): Document
+    public function find(string $id): ?Document
     {
-        return Document::findOrFail($id);
+        return Document::find($id);
     }
 
     public function create(array $data): Document
