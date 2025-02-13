@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamp('last_edited_at')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
