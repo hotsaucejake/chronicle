@@ -2,9 +2,12 @@
 
 namespace App\Filament\Index\Resources\DocumentResource\Pages;
 
+use App\Contracts\Services\DocumentRevisionServiceInterface;
+use App\Events\Document\DocumentEdited;
 use App\Filament\Index\Resources\DocumentResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
+use Thunk\Verbs\Facades\Verbs;
 
 class EditDocument extends EditRecord
 {
@@ -12,10 +15,26 @@ class EditDocument extends EditRecord
 
     protected function getHeaderActions(): array
     {
-        return [
-            Actions\DeleteAction::make(),
-            Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),
-        ];
+        return [];
+    }
+
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        $documentRevisionService = app(DocumentRevisionServiceInterface::class);
+        $document = $this->record;
+
+        $newContent = $data['content'] ?? $document->content;
+
+        $previousVersion = $documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($document->id) + 1;
+
+        DocumentEdited::fire(
+            document_id: $document->id,
+            new_content: $newContent,
+            previous_version: $previousVersion
+        );
+
+        Verbs::commit();
+
+        return $record->fresh();
     }
 }

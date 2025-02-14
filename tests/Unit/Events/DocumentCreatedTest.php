@@ -1,6 +1,6 @@
 <?php
 
-use App\Events\DocumentCreated;
+use App\Events\Document\DocumentCreated;
 use App\States\DocumentState;
 use Carbon\Carbon;
 

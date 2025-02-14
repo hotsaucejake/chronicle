@@ -2,8 +2,7 @@
 
 use App\Contracts\Services\DocumentRevisionServiceInterface;
 use App\Contracts\Services\DocumentServiceInterface;
-use App\Events\DocumentCreated;
-use App\Events\DocumentEdited;
+use App\Events\Document\DocumentEdited;
 use App\Models\Document;
 use App\Models\User;
 use Illuminate\Support\Carbon;

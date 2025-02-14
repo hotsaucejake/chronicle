@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace App\Events\Document;
 
 use App\Contracts\Services\DocumentServiceInterface;
 use App\Data\DocumentCreationData;

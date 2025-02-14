@@ -8,8 +8,8 @@ use App\Contracts\Services\DocumentServiceInterface;
 use App\Data\DocumentCreationData;
 use App\Data\DocumentEditData;
 use App\Data\DocumentRevisionCreationData;
-use App\Events\DocumentCreated;
-use App\Events\DocumentLocked;
+use App\Events\Document\DocumentCreated;
+use App\Events\Document\DocumentLocked;
 use App\Models\Document;
 use Illuminate\Support\Facades\DB;
 
