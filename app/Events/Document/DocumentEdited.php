@@ -37,5 +37,10 @@ class DocumentEdited extends Event
         ]);
 
         $documentService->updateDocument($edit_data);
+
+        event(new DocumentEditedBroadcast(
+            document_id: $this->document_id,
+            new_content: $this->new_content,
+        ));
     }
 }

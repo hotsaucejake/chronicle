@@ -8,6 +8,8 @@ use App\Models\Document;
 
 interface DocumentServiceInterface
 {
+    public function getDocumentById(string $document_id): Document;
+
     public function createDocument(DocumentCreationData $data): Document;
 
     public function updateDocument(DocumentEditData $data): Document;

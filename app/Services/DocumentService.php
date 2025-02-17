@@ -20,6 +20,11 @@ class DocumentService implements DocumentServiceInterface
         protected DocumentRevisionServiceInterface $documentRevisionService,
     ) {}
 
+    public function getDocumentById(string $document_id): Document
+    {
+        return $this->documentRepository->find($document_id);
+    }
+
     public function createDocument(DocumentCreationData $data): Document
     {
         $payload = $data->toArray();

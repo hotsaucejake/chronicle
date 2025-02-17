@@ -13,10 +13,9 @@ class EditDocument extends EditRecord
 {
     protected static string $resource = DocumentResource::class;
 
-    protected function getHeaderActions(): array
-    {
-        return [];
-    }
+    protected static string $view = 'filament.index.resources.document-resource.pages.edit-document';
+
+    public string $content;
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
