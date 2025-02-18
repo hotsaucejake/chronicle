@@ -4,6 +4,7 @@ namespace App\Filament\Index\Resources;
 
 use App\Filament\Index\Resources\DocumentResource\Pages\EditDocument;
 use App\Filament\Index\Resources\DocumentResource\Pages\ListDocuments;
+use App\Filament\Index\Resources\DocumentResource\RelationManagers\RevisionsRelationManager;
 use App\Models\Document;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Form;
@@ -101,7 +102,7 @@ class DocumentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RevisionsRelationManager::class,
         ];
     }
 

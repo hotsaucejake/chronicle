@@ -35,6 +35,7 @@
             id="form"
             :wire:key="$this->getId() . '.forms.' . $this->getFormStatePath()"
             wire:submit="save"
+            class="mb-6"
         >
             {{ $this->form }}
 
