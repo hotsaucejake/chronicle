@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\Services\DocumentServiceInterface;
 use Illuminate\Console\Command;
+use Thunk\Verbs\Facades\Verbs;
 
 class LockExpiredDocuments extends Command
 {
@@ -27,6 +28,8 @@ class LockExpiredDocuments extends Command
     public function handle(DocumentServiceInterface $documentService): void
     {
         $documentService->lockOpenExpiredDocuments();
+
+        Verbs::commit();
 
         if ($documentService->livingDocumentsCount() === 0) {
             $this->info('No living documents found. Creating a new document for revision.');

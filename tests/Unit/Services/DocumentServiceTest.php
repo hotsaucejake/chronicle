@@ -95,6 +95,7 @@ it('locks open expired documents', function () {
     $document = Document::factory()->create([
         'is_locked' => false,
         'expires_at' => now()->subDays(2),
+        'edit_count' => 1,
     ]);
 
     $this->documentService->lockOpenExpiredDocuments();

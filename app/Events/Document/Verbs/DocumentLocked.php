@@ -13,6 +13,9 @@ class DocumentLocked extends Event
         #[StateId(DocumentState::class)] public int $document_id
     ) {}
 
+    /**
+     * @throws \Throwable
+     */
     public function validate(DocumentState $state): void
     {
         // Ensure that the document is not already locked.

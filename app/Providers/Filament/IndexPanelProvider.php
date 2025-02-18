@@ -33,6 +33,7 @@ class IndexPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->topNavigation()
             ->discoverResources(in: app_path('Filament/Index/Resources'), for: 'App\\Filament\\Index\\Resources')
             ->discoverPages(in: app_path('Filament/Index/Pages'), for: 'App\\Filament\\Index\\Pages')
             ->pages([

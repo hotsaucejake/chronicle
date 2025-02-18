@@ -101,7 +101,19 @@ class DocumentService implements DocumentServiceInterface
         $this->documentRepository
             ->retrieveOpenExpiredDocuments()
             ->each(function (Document $document) {
-                DocumentLocked::fire(document_id: $document->id);
+                if (
+                    is_null($document->first_edit_user_id)
+                    && is_null($document->last_edit_user_id)
+                    && $document->unique_editor_count === 0
+                    && $document->edit_count === 0
+                    && is_null($document->last_edited_at)
+                ) {
+                    $this->documentRepository->update($document, [
+                        'expires_at' => now()->addHours(config('chronicle.document_expiration', 1)),
+                    ]);
+                } else {
+                    DocumentLocked::fire(document_id: $document->id);
+                }
             });
     }
 
