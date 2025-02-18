@@ -2,19 +2,19 @@
 
 namespace App\Filament\Index\Resources;
 
-use App\Filament\Index\Resources\VerbEventResource\Pages;
+use App\Filament\Index\Resources\VerbSnapshotResource\Pages;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Thunk\Verbs\Models\VerbEvent;
+use Thunk\Verbs\Models\VerbSnapshot;
 
-class VerbEventResource extends Resource
+class VerbSnapshotResource extends Resource
 {
-    protected static ?string $model = VerbEvent::class;
+    protected static ?string $model = VerbSnapshot::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-star';
+    protected static ?string $navigationIcon = 'heroicon-o-camera';
 
-    protected static ?string $activeNavigationIcon = 'heroicon-s-star';
+    protected static ?string $activeNavigationIcon = 'heroicon-s-camera';
 
     protected static ?string $navigationGroup = 'Verbs';
 
@@ -25,11 +25,21 @@ class VerbEventResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->numeric(thousandsSeparator: '')
-                    ->sortable()
-                    ->searchable(),
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('state_id')
+                    ->label('State ID')
+                    ->numeric(thousandsSeparator: '')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('type')
-                    ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('last_event_id')
+                    ->label('Last Event ID')
+                    ->numeric(thousandsSeparator: '')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('expires_at')
+                    ->label('Expires')
+                    ->dateTime()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created')
                     ->dateTime()
@@ -43,8 +53,7 @@ class VerbEventResource extends Resource
             ])
             ->filters([
                 //
-            ])
-            ->actions([]);
+            ]);
     }
 
     public static function getRelations(): array
@@ -57,7 +66,9 @@ class VerbEventResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListVerbEvents::route('/'),
+            'index' => Pages\ListVerbSnapshots::route('/'),
+            'create' => Pages\CreateVerbSnapshot::route('/create'),
+            'edit' => Pages\EditVerbSnapshot::route('/{record}/edit'),
         ];
     }
 }

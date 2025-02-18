@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\DocumentRevision;
 use App\Models\User;
+use Thunk\Verbs\Models\VerbSnapshot;
 
-class DocumentRevisionPolicy
+class VerbSnapshotPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -18,7 +18,7 @@ class DocumentRevisionPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, DocumentRevision $documentRevision): bool
+    public function view(User $user, VerbSnapshot $verbSnapshot): bool
     {
         return true;
     }
@@ -34,7 +34,7 @@ class DocumentRevisionPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, DocumentRevision $documentRevision): bool
+    public function update(User $user, VerbSnapshot $verbSnapshot): bool
     {
         return false;
     }
@@ -42,7 +42,7 @@ class DocumentRevisionPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, DocumentRevision $documentRevision): bool
+    public function delete(User $user, VerbSnapshot $verbSnapshot): bool
     {
         return false;
     }
@@ -50,7 +50,7 @@ class DocumentRevisionPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, DocumentRevision $documentRevision): bool
+    public function restore(User $user, VerbSnapshot $verbSnapshot): bool
     {
         return false;
     }
@@ -58,7 +58,7 @@ class DocumentRevisionPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, DocumentRevision $documentRevision): bool
+    public function forceDelete(User $user, VerbSnapshot $verbSnapshot): bool
     {
         return false;
     }
