@@ -108,6 +108,7 @@ class DocumentService implements DocumentServiceInterface
                     && $document->edit_count === 0
                     && is_null($document->last_edited_at)
                 ) {
+                    // if the document hasn't been edited then extend the expiration until it has
                     $this->documentRepository->update($document, [
                         'expires_at' => now()->addHours(config('chronicle.document_expiration', 1)),
                     ]);
