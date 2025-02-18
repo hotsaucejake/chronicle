@@ -55,6 +55,7 @@ class IndexPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->viteTheme('resources/css/filament/index/theme.css');
     }
 }
