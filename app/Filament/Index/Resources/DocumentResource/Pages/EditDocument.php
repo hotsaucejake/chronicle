@@ -3,7 +3,7 @@
 namespace App\Filament\Index\Resources\DocumentResource\Pages;
 
 use App\Contracts\Services\DocumentRevisionServiceInterface;
-use App\Events\Document\DocumentEdited;
+use App\Events\Document\Verbs\DocumentEdited;
 use App\Filament\Index\Resources\DocumentResource;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;

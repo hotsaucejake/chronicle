@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events\Document;
+namespace App\Events\Document\Verbs;
 
 use App\Contracts\Services\DocumentServiceInterface;
 use App\States\DocumentState;

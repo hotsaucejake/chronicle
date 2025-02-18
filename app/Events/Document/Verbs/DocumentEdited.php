@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Events\Document;
+namespace App\Events\Document\Verbs;
 
 use App\Contracts\Services\DocumentServiceInterface;
 use App\Data\DocumentEditData;
+use App\Events\Document\DocumentEditedBroadcast;
 use App\States\DocumentState;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
 use Thunk\Verbs\Event;

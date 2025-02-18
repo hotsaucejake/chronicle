@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Contracts\Services\DocumentRevisionServiceInterface;
 use App\Contracts\Services\DocumentServiceInterface;
-use App\Events\Document\DocumentEdited;
+use App\Events\Document\Verbs\DocumentEdited;
 use App\Models\Document;
 use App\Models\User;
 use Illuminate\Console\Command;
