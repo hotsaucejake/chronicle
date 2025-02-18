@@ -6,13 +6,30 @@
     ])
 >
     <div
-        x-data
-        x-init="
-            Echo.private(`document.{{ $record->getKey() }}`)
-                .listen('.App\\Events\\Document\\DocumentEditedBroadcast', (e) => {
-                    $wire.set('data.content', e.new_content);
-                })
-         ">
+        x-data="{
+            editingUsers: {},
+            init() {
+                Echo.private(`document.{{ $record->getKey() }}`)
+                    .listen('.App\\Events\\Document\\DocumentEditedBroadcast', (e) => {
+                        $wire.set('data.content', e.new_content);
+                    })
+                    .listen('.App\\Events\\Document\\DocumentEditingBroadcast', (e) => {
+                        this.editingUsers[e.username] = Date.now();
+                    });
+
+                setInterval(() => {
+                     const now = Date.now();
+                     for (let user in this.editingUsers) {
+                         if (now - this.editingUsers[user] > 10000) {
+                             delete this.editingUsers[user];
+                         }
+                     }
+                 }, 6000);
+
+                $wire.call('pingEditing');
+                setInterval(() => { $wire.call('pingEditing'); }, 6000);
+            }
+        }">
         @capture($form)
         <x-filament-panels::form
             id="form"
@@ -20,6 +37,12 @@
             wire:submit="save"
         >
             {{ $this->form }}
+
+            <!-- Display an indicator if any other users are editing -->
+            <div class="mt-4 text-sm text-gray-500" x-show="Object.keys(editingUsers).length > 0">
+                <span x-text="Object.keys(editingUsers).join(', ') + ' is currently editing'"></span>
+                <span class="animate-bounce inline-block ml-1">...</span>
+            </div>
 
             <x-filament-panels::form.actions
                 :actions="$this->getCachedFormActions()"

@@ -3,6 +3,7 @@
 namespace App\Filament\Index\Resources\DocumentResource\Pages;
 
 use App\Contracts\Services\DocumentRevisionServiceInterface;
+use App\Events\Document\DocumentEditingBroadcast;
 use App\Events\Document\Verbs\DocumentEdited;
 use App\Filament\Index\Resources\DocumentResource;
 use Filament\Resources\Pages\EditRecord;
@@ -16,6 +17,11 @@ class EditDocument extends EditRecord
     protected static string $view = 'filament.index.resources.document-resource.pages.edit-document';
 
     public string $content;
+
+    public function pingEditing(): void
+    {
+        DocumentEditingBroadcast::dispatch($this->getRecord()->id, auth()->user()->username);
+    }
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
