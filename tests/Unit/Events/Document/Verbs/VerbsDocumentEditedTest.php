@@ -81,7 +81,7 @@ it('calls updateVerbsDocument on VerbsDocumentService in handle', function () {
         //     41▕
         //  ➜  42▕         $documentService->updateVerbsDocument($edit_data);
         //     43▕
-        //     44▕         event(new DocumentEditedBroadcast(
+        //     44▕         event(new VerbsDocumentEditedBroadcast(
         //            45▕             verbs_document_id: $this->verbs_document_id,
         //     46▕             new_content: $this->new_content,
         //

@@ -39,7 +39,7 @@ class VerbsDocument extends Model
         ];
     }
 
-    public function revisions(): HasMany
+    public function verbsDocumentRevisions(): HasMany
     {
         return $this->hasMany(VerbsDocumentRevision::class);
     }

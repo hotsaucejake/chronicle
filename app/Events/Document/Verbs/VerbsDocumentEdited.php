@@ -4,7 +4,7 @@ namespace App\Events\Document\Verbs;
 
 use App\Contracts\Services\VerbsDocumentServiceInterface;
 use App\Data\VerbsDocumentEditData;
-use App\Events\Document\DocumentEditedBroadcast;
+use App\Events\Document\VerbsDocumentEditedBroadcast;
 use App\States\VerbsDocumentState;
 use Thunk\Verbs\Attributes\Autodiscovery\StateId;
 use Thunk\Verbs\Event;
@@ -41,7 +41,7 @@ class VerbsDocumentEdited extends Event
 
         $documentService->updateVerbsDocument($edit_data);
 
-        event(new DocumentEditedBroadcast(
+        event(new VerbsDocumentEditedBroadcast(
             verbs_document_id: $this->verbs_document_id,
             new_content: $this->new_content,
         ));

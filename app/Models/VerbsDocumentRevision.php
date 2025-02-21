@@ -31,7 +31,7 @@ class VerbsDocumentRevision extends Model
         ];
     }
 
-    public function document(): BelongsTo
+    public function verbsDocument(): BelongsTo
     {
         return $this->belongsTo(VerbsDocument::class);
     }

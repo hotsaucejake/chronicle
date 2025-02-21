@@ -3,7 +3,7 @@
 namespace App\Filament\Index\Resources\DocumentResource\Pages;
 
 use App\Contracts\Services\VerbsDocumentRevisionServiceInterface;
-use App\Events\Document\DocumentEditingBroadcast;
+use App\Events\Document\VerbsDocumentEditingBroadcast;
 use App\Events\Document\Verbs\VerbsDocumentEdited;
 use App\Filament\Index\Resources\DocumentResource;
 use Filament\Resources\Pages\EditRecord;
@@ -21,7 +21,7 @@ class EditDocument extends EditRecord
 
     public function pingEditing(): void
     {
-        DocumentEditingBroadcast::dispatch($this->getRecord()->id, auth()->user()->username);
+        VerbsDocumentEditingBroadcast::dispatch($this->getRecord()->id, auth()->user()->username);
     }
 
     protected function handleRecordUpdate(Model $record, array $data): Model

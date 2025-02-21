@@ -10,10 +10,10 @@
             editingUsers: {},
             init() {
                 Echo.private(`verbs_document.{{ $record->getKey() }}`)
-                    .listen('.App\\Events\\Document\\DocumentEditedBroadcast', (e) => {
+                    .listen('.App\\Events\\Document\\VerbsDocumentEditedBroadcast', (e) => {
                         $wire.set('data.content', e.new_content);
                     })
-                    .listen('.App\\Events\\Document\\DocumentEditingBroadcast', (e) => {
+                    .listen('.App\\Events\\Document\\VerbsDocumentEditingBroadcast', (e) => {
                         this.editingUsers[e.username] = Date.now();
                     });
 
