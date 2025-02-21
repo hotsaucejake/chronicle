@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 class VerbsDocumentService implements VerbsDocumentServiceInterface
 {
     public function __construct(
-        protected DocumentRepositoryInterface           $documentRepository,
+        protected DocumentRepositoryInterface $documentRepository,
         protected VerbsDocumentRevisionServiceInterface $documentRevisionService,
     ) {}
 

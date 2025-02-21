@@ -3,9 +3,9 @@
 use App\Contracts\Repositories\DocumentRevisionRepositoryInterface;
 use App\Contracts\Services\VerbsDocumentRevisionServiceInterface;
 use App\Data\VerbsDocumentRevisionCreationData;
+use App\Models\User;
 use App\Models\VerbsDocument;
 use App\Models\VerbsDocumentRevision;
-use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

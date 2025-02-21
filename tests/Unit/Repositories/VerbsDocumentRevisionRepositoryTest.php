@@ -1,9 +1,9 @@
 <?php
 
 use App\Contracts\Repositories\DocumentRevisionRepositoryInterface;
+use App\Models\User;
 use App\Models\VerbsDocument;
 use App\Models\VerbsDocumentRevision;
-use App\Models\User;
 use Illuminate\Support\Carbon;
 
 beforeEach(function () {

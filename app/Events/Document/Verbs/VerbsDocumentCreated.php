@@ -23,7 +23,7 @@ class VerbsDocumentCreated extends Event
     }
 
     public function handle(
-        VerbsDocumentState            $state,
+        VerbsDocumentState $state,
         VerbsDocumentServiceInterface $documentService,
     ): void {
         $documentService->createVerbsDocument(new VerbsDocumentCreationData(

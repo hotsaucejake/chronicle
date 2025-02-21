@@ -8,6 +8,7 @@ use App\Events\Document\Verbs\VerbsDocumentEdited;
 use App\Filament\Index\Resources\DocumentResource;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Thunk\Verbs\Facades\Verbs;
 
 class EditDocument extends EditRecord
@@ -35,7 +36,8 @@ class EditDocument extends EditRecord
         VerbsDocumentEdited::fire(
             verbs_document_id: $document->id,
             new_content: $newContent,
-            previous_version: $previousVersion
+            previous_version: $previousVersion,
+            editor_id: Auth::user()->id
         );
 
         Verbs::commit();

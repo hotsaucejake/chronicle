@@ -16,9 +16,9 @@ class VerbsDocumentEditData extends Data
         public string $new_content,
 
         #[Required]
-        public int    $previous_version,
+        public int $previous_version,
 
         #[FromAuthenticatedUserProperty(property: 'id')]
-        public string $editor_id
+        public int $editor_id
     ) {}
 }

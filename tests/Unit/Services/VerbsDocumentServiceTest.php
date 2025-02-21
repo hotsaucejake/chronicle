@@ -3,9 +3,9 @@
 use App\Contracts\Services\VerbsDocumentServiceInterface;
 use App\Data\VerbsDocumentCreationData;
 use App\Data\VerbsDocumentEditData;
+use App\Models\User;
 use App\Models\VerbsDocument;
 use App\Models\VerbsDocumentRevision;
-use App\Models\User;
 
 beforeEach(function () {
     $this->documentService = app(VerbsDocumentServiceInterface::class);

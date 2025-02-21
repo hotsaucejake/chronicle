@@ -3,8 +3,8 @@
 use App\Contracts\Services\VerbsDocumentRevisionServiceInterface;
 use App\Contracts\Services\VerbsDocumentServiceInterface;
 use App\Events\Document\Verbs\VerbsDocumentEdited;
-use App\Models\VerbsDocument;
 use App\Models\User;
+use App\Models\VerbsDocument;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Thunk\Verbs\Facades\Verbs;
@@ -35,7 +35,8 @@ it('simulates a full document workflow', function () {
     VerbsDocumentEdited::fire(
         verbs_document_id: $document->id,
         new_content: 'First edit content',
-        previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1
+        previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1,
+        editor_id: $user->id
     );
     Verbs::commit();
 
@@ -49,7 +50,8 @@ it('simulates a full document workflow', function () {
     VerbsDocumentEdited::fire(
         verbs_document_id: $document->id,
         new_content: 'Second edit content',
-        previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1
+        previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1,
+        editor_id: $user->id
     );
     Verbs::commit();
 
@@ -65,7 +67,8 @@ it('simulates a full document workflow', function () {
     VerbsDocumentEdited::fire(
         verbs_document_id: $document->id,
         new_content: 'Third edit content',
-        previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1
+        previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1,
+        editor_id: $user2->id
     );
     Verbs::commit();
 

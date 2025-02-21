@@ -28,7 +28,7 @@ it('can find a document', function () {
 
     $found = $this->documentRepository->find($document->id);
 
-    expect((string) $found->id)->toEqual((string) $document->id);
+    expect($found->id)->toEqual($document->id);
 });
 
 it('can update a document', function () {

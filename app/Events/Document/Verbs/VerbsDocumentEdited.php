@@ -14,7 +14,8 @@ class VerbsDocumentEdited extends Event
     public function __construct(
         #[StateId(VerbsDocumentState::class)] public int $verbs_document_id,
         public string $new_content,
-        public int $previous_version // passed from the client for optimistic concurrency
+        public int $previous_version, // passed from the client for optimistic concurrency
+        public int $editor_id,
     ) {}
 
     public function validate(VerbsDocumentState $state): void
@@ -35,6 +36,7 @@ class VerbsDocumentEdited extends Event
             'verbs_document_id' => $this->verbs_document_id,
             'new_content' => $this->new_content,
             'previous_version' => $this->previous_version,
+            'editor_id' => $this->editor_id,
         ]);
 
         $documentService->updateVerbsDocument($edit_data);

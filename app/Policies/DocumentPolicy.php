@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\VerbsDocument;
 use App\Models\User;
+use App\Models\VerbsDocument;
 
 class DocumentPolicy
 {

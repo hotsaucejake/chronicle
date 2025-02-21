@@ -17,7 +17,7 @@ class DocumentEditedBroadcast implements ShouldBroadcastNow
      * Create a new event instance.
      */
     public function __construct(
-        public int    $verbs_document_id,
+        public int $verbs_document_id,
         public string $new_content,
     ) {}
 
