@@ -1,7 +1,7 @@
 <?php
 
-use App\Events\Document\Verbs\DocumentCreated;
-use App\States\DocumentState;
+use App\Events\Document\Verbs\VerbsDocumentCreated;
+use App\States\VerbsDocumentState;
 use Carbon\Carbon;
 
 beforeEach(function () {
@@ -9,11 +9,11 @@ beforeEach(function () {
     config()->set('chronicle.document_expiration', 1);
 });
 
-it('applies the DocumentCreated event to state', function () {
-    // Create a fresh DocumentState.
-    $state = new DocumentState;
+it('applies the VerbsDocumentCreated event to state', function () {
+    // Create a fresh VerbsDocumentState.
+    $state = new VerbsDocumentState;
 
-    $event = new DocumentCreated;
+    $event = new VerbsDocumentCreated;
 
     // Call apply() on the event.
     $event->apply($state);

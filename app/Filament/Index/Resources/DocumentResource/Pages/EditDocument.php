@@ -2,9 +2,9 @@
 
 namespace App\Filament\Index\Resources\DocumentResource\Pages;
 
-use App\Contracts\Services\DocumentRevisionServiceInterface;
+use App\Contracts\Services\VerbsDocumentRevisionServiceInterface;
 use App\Events\Document\DocumentEditingBroadcast;
-use App\Events\Document\Verbs\DocumentEdited;
+use App\Events\Document\Verbs\VerbsDocumentEdited;
 use App\Filament\Index\Resources\DocumentResource;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
@@ -25,15 +25,15 @@ class EditDocument extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $documentRevisionService = app(DocumentRevisionServiceInterface::class);
+        $documentRevisionService = app(VerbsDocumentRevisionServiceInterface::class);
         $document = $this->record;
 
         $newContent = $data['content'] ?? $document->content;
 
-        $previousVersion = $documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($document->id) + 1;
+        $previousVersion = $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1;
 
-        DocumentEdited::fire(
-            document_id: $document->id,
+        VerbsDocumentEdited::fire(
+            verbs_document_id: $document->id,
             new_content: $newContent,
             previous_version: $previousVersion
         );

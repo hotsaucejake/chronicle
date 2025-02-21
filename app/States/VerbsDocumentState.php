@@ -5,7 +5,7 @@ namespace App\States;
 use Illuminate\Support\Carbon;
 use Thunk\Verbs\State;
 
-class DocumentState extends State
+class VerbsDocumentState extends State
 {
     // The current content of the document
     public ?string $content = '';

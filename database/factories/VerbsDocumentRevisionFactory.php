@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Document;
-use App\Models\DocumentRevision;
+use App\Models\VerbsDocument;
+use App\Models\VerbsDocumentRevision;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<DocumentRevision>
+ * @extends Factory<VerbsDocumentRevision>
  */
-class DocumentRevisionFactory extends Factory
+class VerbsDocumentRevisionFactory extends Factory
 {
-    protected $model = DocumentRevision::class;
+    protected $model = VerbsDocumentRevision::class;
 
     /**
      * Define the model's default state.
@@ -22,7 +22,7 @@ class DocumentRevisionFactory extends Factory
     public function definition(): array
     {
         return [
-            'document_id' => Document::factory(),
+            'verbs_document_id' => VerbsDocument::factory(),
             'version' => 1,
             'content' => fake()->paragraph,
             'edited_by_user_id' => User::factory(),

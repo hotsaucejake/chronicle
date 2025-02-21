@@ -17,7 +17,7 @@ class DocumentEditedBroadcast implements ShouldBroadcastNow
      * Create a new event instance.
      */
     public function __construct(
-        public int $document_id,
+        public int    $verbs_document_id,
         public string $new_content,
     ) {}
 
@@ -29,7 +29,7 @@ class DocumentEditedBroadcast implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel("document.{$this->document_id}"),
+            new PrivateChannel("verbs_document.{$this->verbs_document_id}"),
         ];
     }
 }

@@ -2,15 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Models\Document;
+use App\Models\VerbsDocument;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Document>
+ * @extends Factory<VerbsDocument>
  */
-class DocumentFactory extends Factory
+class VerbsDocumentFactory extends Factory
 {
-    protected $model = Document::class;
+    protected $model = VerbsDocument::class;
 
     /**
      * Define the model's default state.

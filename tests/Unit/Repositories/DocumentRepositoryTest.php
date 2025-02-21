@@ -1,7 +1,7 @@
 <?php
 
 use App\Contracts\Repositories\DocumentRepositoryInterface;
-use App\Models\Document;
+use App\Models\VerbsDocument;
 use Illuminate\Support\Carbon;
 
 beforeEach(function () {
@@ -18,13 +18,13 @@ it('can create a document', function () {
 
     $document = $this->documentRepository->create($data);
 
-    expect($document)->toBeInstanceOf(Document::class)
+    expect($document)->toBeInstanceOf(VerbsDocument::class)
         ->and($document->content)->toEqual('Test document content')
         ->and($document->is_locked)->toBeFalse();
 });
 
 it('can find a document', function () {
-    $document = Document::factory()->create();
+    $document = VerbsDocument::factory()->create();
 
     $found = $this->documentRepository->find($document->id);
 
@@ -32,7 +32,7 @@ it('can find a document', function () {
 });
 
 it('can update a document', function () {
-    $document = Document::factory()->create([
+    $document = VerbsDocument::factory()->create([
         'content' => 'Old content',
     ]);
 

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Contracts\Services\DocumentServiceInterface;
+use App\Contracts\Services\VerbsDocumentServiceInterface;
 use Illuminate\Console\Command;
 use Thunk\Verbs\Facades\Verbs;
 
@@ -25,15 +25,15 @@ class LockExpiredDocuments extends Command
     /**
      * Execute the console command.
      */
-    public function handle(DocumentServiceInterface $documentService): void
+    public function handle(VerbsDocumentServiceInterface $documentService): void
     {
-        $documentService->lockOpenExpiredDocuments();
+        $documentService->lockOpenExpiredVerbsDocuments();
 
         Verbs::commit();
 
-        if ($documentService->livingDocumentsCount() === 0) {
+        if ($documentService->livingVerbsDocumentsCount() === 0) {
             $this->info('No living documents found. Creating a new document for revision.');
-            $documentService->createNewOpenDocument();
+            $documentService->createNewOpenVerbsDocument();
         }
     }
 }

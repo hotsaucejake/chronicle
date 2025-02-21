@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('documents', function (Blueprint $table) {
+        Schema::create('verbs_documents', function (Blueprint $table) {
             $table->snowflakeId();
             $table->text('content')->nullable();
             $table->boolean('is_locked')->default(false);
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('verbs_documents');
     }
 };

@@ -3,23 +3,23 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\DocumentRevisionRepositoryInterface;
-use App\Models\DocumentRevision;
+use App\Models\VerbsDocumentRevision;
 
 class EloquentDocumentRevisionRepository implements DocumentRevisionRepositoryInterface
 {
-    public function create(array $data): DocumentRevision
+    public function create(array $data): VerbsDocumentRevision
     {
-        return DocumentRevision::create($data);
+        return VerbsDocumentRevision::create($data);
     }
 
-    public function getMaxVersionForDocument(string $documentId): int
+    public function getMaxVersionForVerbsDocument(string $verbs_document_id): int
     {
-        return DocumentRevision::where('document_id', $documentId)->max('version') ?? 0;
+        return VerbsDocumentRevision::where('verbs_document_id', $verbs_document_id)->max('version') ?? 0;
     }
 
-    public function getUniqueEditorCountByDocumentId(string $documentId): int
+    public function getUniqueEditorCountByVerbsDocumentId(string $verbs_document_id): int
     {
-        return DocumentRevision::where('document_id', $documentId)
+        return VerbsDocumentRevision::where('verbs_document_id', $verbs_document_id)
             ->distinct()
             ->count('edited_by_user_id');
     }

@@ -19,7 +19,7 @@ class RevisionsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('document_id')
+            ->recordTitleAttribute('verbs_document_id')
             ->columns([
                 // TextColumn::make('document_id'),
                 TextColumn::make('version'),

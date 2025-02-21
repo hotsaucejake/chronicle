@@ -3,22 +3,22 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\DocumentRepositoryInterface;
-use App\Models\Document;
+use App\Models\VerbsDocument;
 use Illuminate\Database\Eloquent\Builder;
 
 class EloquentDocumentRepository implements DocumentRepositoryInterface
 {
-    public function find(string $id): ?Document
+    public function find(string $id): ?VerbsDocument
     {
-        return Document::find($id);
+        return VerbsDocument::find($id);
     }
 
-    public function create(array $data): Document
+    public function create(array $data): VerbsDocument
     {
-        return Document::create($data);
+        return VerbsDocument::create($data);
     }
 
-    public function update(Document $document, array $data): Document
+    public function update(VerbsDocument $document, array $data): VerbsDocument
     {
         $document->update($data);
 
@@ -27,13 +27,13 @@ class EloquentDocumentRepository implements DocumentRepositoryInterface
 
     public function retrieveOpenExpiredDocuments(): Builder
     {
-        return Document::whereDate('expires_at', '<=', now())
+        return VerbsDocument::whereDate('expires_at', '<=', now())
             ->where('is_locked', false);
     }
 
     public function livingDocumentsCount(): int
     {
-        return Document::where('is_locked', false)
+        return VerbsDocument::where('is_locked', false)
             ->count();
     }
 }

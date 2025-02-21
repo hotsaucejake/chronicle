@@ -3,39 +3,39 @@
 namespace App\Services;
 
 use App\Contracts\Repositories\DocumentRepositoryInterface;
-use App\Contracts\Services\DocumentRevisionServiceInterface;
-use App\Contracts\Services\DocumentServiceInterface;
-use App\Data\DocumentCreationData;
-use App\Data\DocumentEditData;
-use App\Data\DocumentRevisionCreationData;
-use App\Events\Document\Verbs\DocumentCreated;
-use App\Events\Document\Verbs\DocumentLocked;
-use App\Models\Document;
+use App\Contracts\Services\VerbsDocumentRevisionServiceInterface;
+use App\Contracts\Services\VerbsDocumentServiceInterface;
+use App\Data\VerbsDocumentCreationData;
+use App\Data\VerbsDocumentEditData;
+use App\Data\VerbsDocumentRevisionCreationData;
+use App\Events\Document\Verbs\VerbsDocumentCreated;
+use App\Events\Document\Verbs\VerbsDocumentLocked;
+use App\Models\VerbsDocument;
 use Illuminate\Support\Facades\DB;
 
-class DocumentService implements DocumentServiceInterface
+class VerbsDocumentService implements VerbsDocumentServiceInterface
 {
     public function __construct(
-        protected DocumentRepositoryInterface $documentRepository,
-        protected DocumentRevisionServiceInterface $documentRevisionService,
+        protected DocumentRepositoryInterface           $documentRepository,
+        protected VerbsDocumentRevisionServiceInterface $documentRevisionService,
     ) {}
 
-    public function getDocumentById(string $document_id): Document
+    public function getVerbsDocumentById(string $verbs_document_id): VerbsDocument
     {
-        return $this->documentRepository->find($document_id);
+        return $this->documentRepository->find($verbs_document_id);
     }
 
-    public function createDocument(DocumentCreationData $data): Document
+    public function createVerbsDocument(VerbsDocumentCreationData $data): VerbsDocument
     {
         $payload = $data->toArray();
 
         return $this->documentRepository->create($payload);
     }
 
-    public function updateDocument(DocumentEditData $data): Document
+    public function updateVerbsDocument(VerbsDocumentEditData $data): VerbsDocument
     {
         return DB::transaction(function () use ($data) {
-            $document = $this->documentRepository->find($data->document_id);
+            $document = $this->documentRepository->find($data->verbs_document_id);
             $edit_count = $document->edit_count + 1;
 
             $updateData = [
@@ -52,21 +52,21 @@ class DocumentService implements DocumentServiceInterface
 
             $newDocument = $this->documentRepository->update($document, $updateData);
 
-            $version = $this->documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($data->document_id) + 1;
+            $version = $this->documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($data->verbs_document_id) + 1;
 
-            $documentRevisionData = DocumentRevisionCreationData::from([
-                'document_id' => $data->document_id,
+            $documentRevisionData = VerbsDocumentRevisionCreationData::from([
+                'verbs_document_id' => $data->verbs_document_id,
                 'version' => $version,
                 'content' => $data->new_content,
                 'edited_by_user_id' => $data->editor_id,
                 'edited_at' => now(),
             ]);
 
-            $this->documentRevisionService->createDocumentRevision($documentRevisionData);
+            $this->documentRevisionService->createVerbsDocumentRevision($documentRevisionData);
 
             // Update unique_editor_count:
             // Query the revisions table for distinct editors for this document.
-            $uniqueEditorsCount = $this->documentRevisionService->getUniqueEditorCountByDocumentId($data->document_id);
+            $uniqueEditorsCount = $this->documentRevisionService->getUniqueEditorCountByVerbsDocumentId($data->verbs_document_id);
 
             // Update the document projection with the new count.
             return $this->documentRepository->update($newDocument, [
@@ -75,10 +75,10 @@ class DocumentService implements DocumentServiceInterface
         });
     }
 
-    public function lockDocumentById(string $document_id): bool
+    public function lockVerbsDocumentById(string $verbs_document_id): bool
     {
-        return DB::transaction(function () use ($document_id) {
-            $document = $this->documentRepository->find($document_id);
+        return DB::transaction(function () use ($verbs_document_id) {
+            $document = $this->documentRepository->find($verbs_document_id);
 
             if (!$document) {
                 return false;
@@ -96,11 +96,11 @@ class DocumentService implements DocumentServiceInterface
         });
     }
 
-    public function lockOpenExpiredDocuments(): void
+    public function lockOpenExpiredVerbsDocuments(): void
     {
         $this->documentRepository
             ->retrieveOpenExpiredDocuments()
-            ->each(function (Document $document) {
+            ->each(function (VerbsDocument $document) {
                 if (
                     is_null($document->first_edit_user_id)
                     && is_null($document->last_edit_user_id)
@@ -113,17 +113,17 @@ class DocumentService implements DocumentServiceInterface
                         'expires_at' => now()->addHours(config('chronicle.document_expiration', 1)),
                     ]);
                 } else {
-                    DocumentLocked::fire(document_id: $document->id);
+                    VerbsDocumentLocked::fire(verbs_document_id: $document->id);
                 }
             });
     }
 
-    public function createNewOpenDocument(): void
+    public function createNewOpenVerbsDocument(): void
     {
-        DocumentCreated::fire();
+        VerbsDocumentCreated::fire();
     }
 
-    public function livingDocumentsCount(): int
+    public function livingVerbsDocumentsCount(): int
     {
         return $this->documentRepository->livingDocumentsCount();
     }

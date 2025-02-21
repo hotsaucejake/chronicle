@@ -1,20 +1,20 @@
 <?php
 
-use App\Contracts\Services\DocumentServiceInterface;
-use App\Data\DocumentCreationData;
-use App\Data\DocumentEditData;
-use App\Models\Document;
-use App\Models\DocumentRevision;
+use App\Contracts\Services\VerbsDocumentServiceInterface;
+use App\Data\VerbsDocumentCreationData;
+use App\Data\VerbsDocumentEditData;
+use App\Models\VerbsDocument;
+use App\Models\VerbsDocumentRevision;
 use App\Models\User;
 
 beforeEach(function () {
-    $this->documentService = app(DocumentServiceInterface::class);
+    $this->documentService = app(VerbsDocumentServiceInterface::class);
 });
 
 it('creates an empty document', function () {
-    // Create a DocumentCreationData instance with null content.
-    $creationData = new DocumentCreationData(null);
-    $document = $this->documentService->createDocument($creationData);
+    // Create a VerbsDocumentCreationData instance with null content.
+    $creationData = new VerbsDocumentCreationData(null);
+    $document = $this->documentService->createVerbsDocument($creationData);
 
     expect($document->content)->toBeNull();
 });
@@ -23,9 +23,9 @@ it('creates a document', function () {
     config()->set('chronicle.initial_document_text', 'Default Content');
     config()->set('chronicle.document_expiration', 1);
 
-    $creationData = new DocumentCreationData('Initial Content');
+    $creationData = new VerbsDocumentCreationData('Initial Content');
 
-    $document = $this->documentService->createDocument($creationData);
+    $document = $this->documentService->createVerbsDocument($creationData);
 
     expect($document->content)->toEqual('Initial Content')
         ->and($document->is_locked)->toBeFalse();
@@ -33,23 +33,23 @@ it('creates a document', function () {
 
 it('updates a document and creates a new revision', function () {
     // Create an initial document.
-    $document = Document::factory()->create([
+    $document = VerbsDocument::factory()->create([
         'content' => 'Original Content',
         'edit_count' => 0,
     ]);
 
     $user = User::factory()->create();
 
-    // Prepare a DocumentEditData instance.
+    // Prepare a VerbsDocumentEditData instance.
     // Since we’re not simulating authentication here, pass editor_id explicitly.
-    $editData = new DocumentEditData(
-        document_id: $document->id,
+    $editData = new VerbsDocumentEditData(
+        verbs_document_id: $document->id,
         new_content: 'Updated Content',
         previous_version: 1,
         editor_id: $user->id,
     );
 
-    $updatedDocument = $this->documentService->updateDocument($editData);
+    $updatedDocument = $this->documentService->updateVerbsDocument($editData);
 
     expect($updatedDocument->content)->toEqual('Updated Content')
         ->and($updatedDocument->edit_count)->toEqual(1)
@@ -58,32 +58,32 @@ it('updates a document and creates a new revision', function () {
         ->and($updatedDocument->unique_editor_count)->toEqual(1);
 
     // Verify that a revision was created with version = 1.
-    $revisionVersion = DocumentRevision::where('document_id', $document->id)->max('version');
+    $revisionVersion = VerbsDocumentRevision::where('verbs_document_id', $document->id)->max('version');
     expect($revisionVersion)->toEqual(1);
 });
 
 it('locks a document by id', function () {
-    $document = Document::factory()->create([
+    $document = VerbsDocument::factory()->create([
         'is_locked' => false,
     ]);
 
-    $isLocked = $this->documentService->lockDocumentById($document->id);
+    $isLocked = $this->documentService->lockVerbsDocumentById($document->id);
 
     expect($isLocked)->toBeTrue();
 });
 
 it('does not lock a document that is already locked', function () {
-    $document = Document::factory()->create([
+    $document = VerbsDocument::factory()->create([
         'is_locked' => true,
     ]);
 
-    $isLocked = $this->documentService->lockDocumentById($document->id);
+    $isLocked = $this->documentService->lockVerbsDocumentById($document->id);
 
     expect($isLocked)->toBeFalse();
 });
 
 it('does not lock a document that does not exist', function () {
-    $isLocked = $this->documentService->lockDocumentById(0);
+    $isLocked = $this->documentService->lockVerbsDocumentById(0);
 
     expect($isLocked)->toBeFalse();
 });
@@ -92,13 +92,13 @@ it('locks open expired documents', function () {
     config()->set('chronicle.initial_document_text', 'Default Content');
     config()->set('chronicle.document_expiration', 1);
 
-    $document = Document::factory()->create([
+    $document = VerbsDocument::factory()->create([
         'is_locked' => false,
         'expires_at' => now()->subDays(2),
         'edit_count' => 1,
     ]);
 
-    $this->documentService->lockOpenExpiredDocuments();
+    $this->documentService->lockOpenExpiredVerbsDocuments();
     Verbs::commit();
 
     $document->refresh();
@@ -110,12 +110,12 @@ it('does not lock documents that are not expired', function () {
     config()->set('chronicle.initial_document_text', 'Default Content');
     config()->set('chronicle.document_expiration', 1);
 
-    $document = Document::factory()->create([
+    $document = VerbsDocument::factory()->create([
         'is_locked' => false,
         'expires_at' => now()->addDays(2),
     ]);
 
-    $this->documentService->lockOpenExpiredDocuments();
+    $this->documentService->lockOpenExpiredVerbsDocuments();
     Verbs::commit();
 
     $document->refresh();
@@ -127,10 +127,10 @@ it('creates new open document', function () {
     config()->set('chronicle.initial_document_text', 'Default Content');
     config()->set('chronicle.document_expiration', 1);
 
-    $this->documentService->createNewOpenDocument();
+    $this->documentService->createNewOpenVerbsDocument();
     Verbs::commit();
 
-    $document = Document::where('is_locked', false)
+    $document = VerbsDocument::where('is_locked', false)
         ->latest()
         ->first();
 
@@ -138,11 +138,11 @@ it('creates new open document', function () {
 });
 
 it('retrieves living documents count', function () {
-    $document = Document::factory()->create([
+    $document = VerbsDocument::factory()->create([
         'is_locked' => false,
     ]);
 
-    $livingDocumentsCount = $this->documentService->livingDocumentsCount();
+    $livingDocumentsCount = $this->documentService->livingVerbsDocumentsCount();
 
     expect($livingDocumentsCount)->toEqual(1);
 });

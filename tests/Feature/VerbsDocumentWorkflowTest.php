@@ -1,9 +1,9 @@
 <?php
 
-use App\Contracts\Services\DocumentRevisionServiceInterface;
-use App\Contracts\Services\DocumentServiceInterface;
-use App\Events\Document\Verbs\DocumentEdited;
-use App\Models\Document;
+use App\Contracts\Services\VerbsDocumentRevisionServiceInterface;
+use App\Contracts\Services\VerbsDocumentServiceInterface;
+use App\Events\Document\Verbs\VerbsDocumentEdited;
+use App\Models\VerbsDocument;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
@@ -13,47 +13,47 @@ it('simulates a full document workflow', function () {
     // Set config values for testing.
     config()->set('chronicle.initial_document_text', 'Default Content');
     config()->set('chronicle.document_expiration', 1);
-    $documentService = app(DocumentServiceInterface::class);
-    $documentRevisionService = app(DocumentRevisionServiceInterface::class);
+    $documentService = app(VerbsDocumentServiceInterface::class);
+    $documentRevisionService = app(VerbsDocumentRevisionServiceInterface::class);
 
     // Create a user and act as that user.
     $user = User::factory()->create();
     $user2 = User::factory()->create();
     $this->actingAs($user);
 
-    // 1. Create a new document by firing DocumentCreated.
+    // 1. Create a new document by firing VerbsDocumentCreated.
     Artisan::call('chronicle:lock-expired-documents');
     Verbs::commit();
 
-    $document = Document::where('is_locked', false)
+    $document = VerbsDocument::where('is_locked', false)
         ->latest()
         ->first();
 
     expect($document->content)->toEqual('Default Content');
 
     // 2. Edit the document.
-    DocumentEdited::fire(
-        document_id: $document->id,
+    VerbsDocumentEdited::fire(
+        verbs_document_id: $document->id,
         new_content: 'First edit content',
-        previous_version: $documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($document->id) + 1
+        previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1
     );
     Verbs::commit();
 
-    $document = Document::find($document->id);
+    $document = VerbsDocument::find($document->id);
     expect($document->content)->toEqual('First edit content')
         ->and($document->edit_count)->toEqual(1)
         ->and($document->first_edit_user_id)->toEqual($user->id)
         ->and($document->last_edit_user_id)->toEqual($user->id)
         ->and($document->unique_editor_count)->toEqual(1);
 
-    DocumentEdited::fire(
-        document_id: $document->id,
+    VerbsDocumentEdited::fire(
+        verbs_document_id: $document->id,
         new_content: 'Second edit content',
-        previous_version: $documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($document->id) + 1
+        previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1
     );
     Verbs::commit();
 
-    $document = Document::find($document->id);
+    $document = VerbsDocument::find($document->id);
     expect($document->content)->toEqual('Second edit content')
         ->and($document->edit_count)->toEqual(2)
         ->and($document->first_edit_user_id)->toEqual($user->id)
@@ -62,14 +62,14 @@ it('simulates a full document workflow', function () {
 
     $this->actingAs($user2);
 
-    DocumentEdited::fire(
-        document_id: $document->id,
+    VerbsDocumentEdited::fire(
+        verbs_document_id: $document->id,
         new_content: 'Third edit content',
-        previous_version: $documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($document->id) + 1
+        previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1
     );
     Verbs::commit();
 
-    $document = Document::find($document->id);
+    $document = VerbsDocument::find($document->id);
     expect($document->content)->toEqual('Third edit content')
         ->and($document->edit_count)->toEqual(3)
         ->and($document->first_edit_user_id)->toEqual($user->id)
@@ -83,6 +83,6 @@ it('simulates a full document workflow', function () {
     Artisan::call('chronicle:lock-expired-documents');
     Verbs::commit();
 
-    $document = Document::find($document->id);
+    $document = VerbsDocument::find($document->id);
     expect($document->is_locked)->toBeTrue();
 });

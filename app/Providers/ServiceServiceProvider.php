@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Contracts\Services\DocumentRevisionServiceInterface;
-use App\Contracts\Services\DocumentServiceInterface;
+use App\Contracts\Services\VerbsDocumentRevisionServiceInterface;
+use App\Contracts\Services\VerbsDocumentServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
-use App\Services\DocumentRevisionService;
-use App\Services\DocumentService;
+use App\Services\VerbsDocumentRevisionService;
+use App\Services\VerbsDocumentService;
 use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,13 +18,13 @@ class ServiceServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            DocumentRevisionServiceInterface::class,
-            DocumentRevisionService::class
+            VerbsDocumentRevisionServiceInterface::class,
+            VerbsDocumentRevisionService::class
         );
 
         $this->app->bind(
-            DocumentServiceInterface::class,
-            DocumentService::class
+            VerbsDocumentServiceInterface::class,
+            VerbsDocumentService::class
         );
 
         $this->app->bind(

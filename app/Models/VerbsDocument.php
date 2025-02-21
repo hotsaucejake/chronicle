@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Database\Factories\DocumentFactory;
+use Database\Factories\VerbsDocumentFactory;
 use Glhd\Bits\Database\HasSnowflakes;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[UseFactory(DocumentFactory::class)]
-class Document extends Model
+#[UseFactory(VerbsDocumentFactory::class)]
+class VerbsDocument extends Model
 {
     use HasFactory;
     use HasSnowflakes;
@@ -41,7 +41,7 @@ class Document extends Model
 
     public function revisions(): HasMany
     {
-        return $this->hasMany(DocumentRevision::class);
+        return $this->hasMany(VerbsDocumentRevision::class);
     }
 
     public function firstEditUser(): HasMany

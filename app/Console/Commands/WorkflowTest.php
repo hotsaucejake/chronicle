@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Contracts\Services\DocumentRevisionServiceInterface;
-use App\Contracts\Services\DocumentServiceInterface;
-use App\Events\Document\Verbs\DocumentEdited;
-use App\Models\Document;
+use App\Contracts\Services\VerbsDocumentRevisionServiceInterface;
+use App\Contracts\Services\VerbsDocumentServiceInterface;
+use App\Events\Document\Verbs\VerbsDocumentEdited;
+use App\Models\VerbsDocument;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
@@ -36,8 +36,8 @@ class WorkflowTest extends Command
         config()->set('chronicle.initial_document_text', 'Default Content');
         config()->set('chronicle.document_expiration', 1);
 
-        $documentService = app(DocumentServiceInterface::class);
-        $documentRevisionService = app(DocumentRevisionServiceInterface::class);
+        $documentService = app(VerbsDocumentServiceInterface::class);
+        $documentRevisionService = app(VerbsDocumentRevisionServiceInterface::class);
 
         $user = User::factory()->create();
         $user2 = User::factory()->create();
@@ -47,40 +47,40 @@ class WorkflowTest extends Command
         Artisan::call('chronicle:lock-expired-documents');
         Verbs::commit();
 
-        $document = Document::where('is_locked', false)
+        $document = VerbsDocument::where('is_locked', false)
             ->latest()
             ->first();
 
         // 2. Edit the document.
-        DocumentEdited::fire(
-            document_id: $document->id,
+        VerbsDocumentEdited::fire(
+            verbs_document_id: $document->id,
             new_content: 'First edit content',
-            previous_version: $documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($document->id) + 1
+            previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1
         );
         Verbs::commit();
 
-        $document = Document::find($document->id);
+        $document = VerbsDocument::find($document->id);
 
-        DocumentEdited::fire(
-            document_id: $document->id,
+        VerbsDocumentEdited::fire(
+            verbs_document_id: $document->id,
             new_content: 'Second edit content',
-            previous_version: $documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($document->id) + 1
+            previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1
         );
         Verbs::commit();
 
         Auth::logout();
         Auth::login($user2);
 
-        $document = Document::find($document->id);
+        $document = VerbsDocument::find($document->id);
 
-        DocumentEdited::fire(
-            document_id: $document->id,
+        VerbsDocumentEdited::fire(
+            verbs_document_id: $document->id,
             new_content: 'Third edit content',
-            previous_version: $documentRevisionService->getMaxVersionDocumentRevisionByDocumentId($document->id) + 1
+            previous_version: $documentRevisionService->getMaxVersionVerbsDocumentRevisionByVerbsDocumentId($document->id) + 1
         );
         Verbs::commit();
 
-        $document = Document::find($document->id);
+        $document = VerbsDocument::find($document->id);
 
         // 3. Simulate expiration by updating expires_at to the past.
         $document->update(['expires_at' => now()->subMinute()]);

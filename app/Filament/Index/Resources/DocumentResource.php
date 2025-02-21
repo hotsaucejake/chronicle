@@ -5,7 +5,7 @@ namespace App\Filament\Index\Resources;
 use App\Filament\Index\Resources\DocumentResource\Pages\EditDocument;
 use App\Filament\Index\Resources\DocumentResource\Pages\ListDocuments;
 use App\Filament\Index\Resources\DocumentResource\RelationManagers\RevisionsRelationManager;
-use App\Models\Document;
+use App\Models\VerbsDocument;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DocumentResource extends Resource
 {
-    protected static ?string $model = Document::class;
+    protected static ?string $model = VerbsDocument::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
 
@@ -27,7 +27,7 @@ class DocumentResource extends Resource
         return $form
             ->schema([
                 MarkdownEditor::make('content')
-                    ->label(function (Document $record) {
+                    ->label(function (VerbsDocument $record) {
                         return $record->exists
                             ? $record->id
                             : '';
@@ -93,10 +93,10 @@ class DocumentResource extends Resource
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->visible(fn (Document $record) => !$record->is_locked),
+                    ->visible(fn (VerbsDocument $record) => !$record->is_locked),
             ])
             // TODO: make policy to prevent editing a locked document
-            ->recordUrl(fn (Document $record) => $record->is_locked ? null : EditDocument::getUrl([$record]));
+            ->recordUrl(fn (VerbsDocument $record) => $record->is_locked ? null : EditDocument::getUrl([$record]));
     }
 
     public static function getRelations(): array

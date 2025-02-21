@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('document_revisions', function (Blueprint $table) {
+        Schema::create('verbs_document_revisions', function (Blueprint $table) {
             $table->snowflakeId();
 
-            $table->foreignId('document_id')->constrained('documents')->cascadeOnDelete();
+            $table->foreignId('verbs_document_id')->constrained('verbs_documents')->cascadeOnDelete();
             $table->unsignedBigInteger('version')->default(1);
 
             $table->text('content');
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('document_revisions');
+        Schema::dropIfExists('verbs_document_revisions');
     }
 };
