@@ -9,7 +9,7 @@
         x-data="{
             editingUsers: {},
             init() {
-                Echo.private(`document.{{ $record->getKey() }}`)
+                Echo.private(`verbs_document.{{ $record->getKey() }}`)
                     .listen('.App\\Events\\Document\\DocumentEditedBroadcast', (e) => {
                         $wire.set('data.content', e.new_content);
                     })
