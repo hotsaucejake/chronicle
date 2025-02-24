@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('last_edit_user_id')->nullable()->constrained('users');
             $table->unsignedBigInteger('unique_editor_count')->default(0);
             $table->unsignedBigInteger('edit_count')->default(0);
+            $table->unsignedBigInteger('version')->default(1);
             $table->timestamp('last_edited_at')->nullable();
 
             $table->timestamps();

@@ -11,11 +11,4 @@ class ListDocuments extends ListRecords
     protected static string $resource = VerbsDocumentResource::class;
 
     protected static ?string $navigationGroup = 'Verbs';
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
 }

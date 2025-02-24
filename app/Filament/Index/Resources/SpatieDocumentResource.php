@@ -2,23 +2,31 @@
 
 namespace App\Filament\Index\Resources;
 
+use App\Filament\Index\Resources\SpatieDocumentResource\Pages;
+use App\Filament\Index\Resources\SpatieDocumentResource\Pages\EditSpatieDocument;
+use App\Filament\Index\Resources\SpatieDocumentResource\Pages\ListSpatieDocuments;
+use App\Filament\Index\Resources\SpatieDocumentResource\RelationManagers;
 use App\Filament\Index\Resources\VerbsDocumentResource\Pages\EditDocument;
-use App\Filament\Index\Resources\VerbsDocumentResource\Pages\ListDocuments;
-use App\Filament\Index\Resources\VerbsDocumentResource\RelationManagers\VerbsDocumentRevisionsRelationManager;
+use App\Models\SpatieDocument;
 use App\Models\VerbsDocument;
+use App\Projections\SpatieDocumentProjection;
+use Filament\Forms;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class VerbsDocumentResource extends Resource
+class SpatieDocumentResource extends Resource
 {
-    protected static ?string $model = VerbsDocument::class;
+    protected static ?string $model = SpatieDocumentProjection::class;
 
-    protected static ?string $navigationGroup = 'Verbs';
+    protected static ?string $navigationGroup = 'Spatie';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
 
@@ -29,97 +37,79 @@ class VerbsDocumentResource extends Resource
         return $form
             ->schema([
                 MarkdownEditor::make('content')
-                    ->label(function (VerbsDocument $record) {
-                        return $record->exists
-                            ? $record->id
-                            : '';
-                    })
-                    ->columnSpanFull()
-                    ->disableToolbarButtons([
-                        'attachFiles',
-                    ]),
+                    ->disableToolbarButtons(['attachFiles'])
+                    ->columnSpanFull(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultSort('id', 'desc')
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->numeric(thousandsSeparator: '')
-                    ->sortable(),
-                Tables\Columns\IconColumn::make('is_locked')
+                TextColumn::make('uuid')
+                    ->label('UUID')
+                    ->searchable(),
+                IconColumn::make('is_locked')
                     ->label('Locked?')
                     ->boolean()
                     ->trueIcon('heroicon-s-lock-closed')
                     ->falseIcon('heroicon-s-lock-open')
                     ->trueColor('danger')
                     ->falseColor('success'),
-                Tables\Columns\TextColumn::make('expires_at')
+                TextColumn::make('expires_at')
                     ->label('Expires')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('firstEditUser.username')
+                TextColumn::make('firstEditUser.username')
                     ->label('First Editor')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('lastEditUser.username')
+                TextColumn::make('lastEditUser.username')
                     ->label('Last Editor')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('unique_editor_count')
+                TextColumn::make('unique_editor_count')
                     ->label('# Editors')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('edit_count')
+                TextColumn::make('edit_count')
                     ->label('# Edits')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('last_edited_at')
+                TextColumn::make('last_edited_at')
                     ->label('Last Edited')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label('Created')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label('Updated')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->visible(fn (VerbsDocument $record) => !$record->is_locked),
+                EditAction::make()
+                    ->visible(fn (SpatieDocumentProjection $record) => !$record->is_locked),
             ])
-            ->recordUrl(fn (VerbsDocument $record) => $record->is_locked ? null : EditDocument::getUrl([$record]));
+            ->recordUrl(fn (SpatieDocumentProjection $record) => $record->is_locked ? null : EditSpatieDocument::getUrl([$record]));
     }
 
     public static function getRelations(): array
     {
         return [
-            VerbsDocumentRevisionsRelationManager::class,
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListDocuments::route('/'),
-            'edit' => EditDocument::route('/{record}/edit'),
+            'index' => ListSpatieDocuments::route('/'),
+            'edit' => EditSpatieDocument::route('/{record}/edit'),
         ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
     }
 }
