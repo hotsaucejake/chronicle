@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Index\Resources\DocumentResource\Pages;
+namespace App\Filament\Index\Resources\VerbsDocumentResource\Pages;
 
 use App\Contracts\Services\VerbsDocumentRevisionServiceInterface;
-use App\Events\Document\VerbsDocumentEditingBroadcast;
 use App\Events\Document\Verbs\VerbsDocumentEdited;
+use App\Events\Document\VerbsDocumentEditingBroadcast;
 use App\Filament\Index\Resources\VerbsDocumentResource;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;

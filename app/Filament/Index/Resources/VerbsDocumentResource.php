@@ -2,8 +2,8 @@
 
 namespace App\Filament\Index\Resources;
 
-use App\Filament\Index\Resources\DocumentResource\Pages\EditDocument;
-use App\Filament\Index\Resources\DocumentResource\Pages\ListDocuments;
+use App\Filament\Index\Resources\VerbsDocumentResource\Pages\EditDocument;
+use App\Filament\Index\Resources\VerbsDocumentResource\Pages\ListDocuments;
 use App\Filament\Index\Resources\VerbsDocumentResource\RelationManagers\VerbsDocumentRevisionsRelationManager;
 use App\Models\VerbsDocument;
 use Filament\Forms\Components\MarkdownEditor;
@@ -113,7 +113,6 @@ class VerbsDocumentResource extends Resource
         return [
             'index' => ListDocuments::route('/'),
             'edit' => EditDocument::route('/{record}/edit'),
-            // TODO: make view page
         ];
     }
 

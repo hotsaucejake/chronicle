@@ -14,5 +14,5 @@ test('document creation and revisions relationship', function () {
     ]);
 
     $this->assertEquals('Initial content', $document->content);
-    $this->assertCount(1, $document->revisions);
+    $this->assertCount(1, $document->verbsDocumentRevisions);
 });

@@ -3,9 +3,9 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\VerbsDocumentRevision;
+use App\Models\VerbsDocument;
 
-class DocumentRevisionPolicy
+class VerbsDocumentPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -18,7 +18,7 @@ class DocumentRevisionPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, VerbsDocumentRevision $documentRevision): bool
+    public function view(User $user, VerbsDocument $document): bool
     {
         return true;
     }
@@ -34,15 +34,15 @@ class DocumentRevisionPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, VerbsDocumentRevision $documentRevision): bool
+    public function update(User $user, VerbsDocument $document): bool
     {
-        return false;
+        return !$document->is_locked;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, VerbsDocumentRevision $documentRevision): bool
+    public function delete(User $user, VerbsDocument $document): bool
     {
         return false;
     }
@@ -50,7 +50,7 @@ class DocumentRevisionPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, VerbsDocumentRevision $documentRevision): bool
+    public function restore(User $user, VerbsDocument $document): bool
     {
         return false;
     }
@@ -58,7 +58,7 @@ class DocumentRevisionPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, VerbsDocumentRevision $documentRevision): bool
+    public function forceDelete(User $user, VerbsDocument $document): bool
     {
         return false;
     }

@@ -3,8 +3,12 @@
 namespace App\Filament\Index\Resources;
 
 use App\Filament\Index\Resources\VerbEventResource\Pages;
+use Filament\Infolists\Components\KeyValueEntry;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Table;
 use Thunk\Verbs\Models\VerbEvent;
 
@@ -44,7 +48,21 @@ class VerbEventResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([]);
+            ->actions([
+                ViewAction::make(),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                KeyValueEntry::make('data')
+                    ->columnSpanFull(),
+                TextEntry::make('metadata')
+                    ->state(fn (VerbEvent $record) => json_encode($record->metadata, JSON_PRETTY_PRINT))
+                    ->columnSpanFull(),
+            ]);
     }
 
     public static function getRelations(): array

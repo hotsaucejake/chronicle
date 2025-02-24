@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Index\Resources\DocumentResource\Pages;
+namespace App\Filament\Index\Resources\VerbsDocumentResource\Pages;
 
 use App\Filament\Index\Resources\VerbsDocumentResource;
 use Filament\Actions;

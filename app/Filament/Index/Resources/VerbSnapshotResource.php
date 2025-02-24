@@ -3,8 +3,11 @@
 namespace App\Filament\Index\Resources;
 
 use App\Filament\Index\Resources\VerbSnapshotResource\Pages;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Table;
 use Thunk\Verbs\Models\VerbSnapshot;
 
@@ -51,8 +54,21 @@ class VerbSnapshotResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->actions([
+                ViewAction::make(),
+            ])
             ->filters([
                 //
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                TextEntry::make('data')
+                    ->state(fn (VerbSnapshot $record) => json_encode($record->data, JSON_PRETTY_PRINT))
+                    ->columnSpanFull(),
             ]);
     }
 
