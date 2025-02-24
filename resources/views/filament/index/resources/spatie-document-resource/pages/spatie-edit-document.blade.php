@@ -9,7 +9,7 @@
         x-data="{
             editingUsers: {},
             init() {
-                Echo.private(`verbs_document.{{ $record->uuid }}`)
+                Echo.private(`spatie_document.{{ $record->uuid }}`)
                     .listen('.App\\Events\\Document\\SpatieDocumentEditedBroadcast', (e) => {
                         $wire.set('data.content', e.new_content);
                     })

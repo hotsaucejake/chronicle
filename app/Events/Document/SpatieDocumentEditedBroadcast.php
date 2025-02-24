@@ -19,9 +19,7 @@ class SpatieDocumentEditedBroadcast implements ShouldBroadcastNow
     public function __construct(
         public string $uuid,
         public string $new_content
-    )
-    {
-    }
+    ) {}
 
     /**
      * Get the channels the event should broadcast on.
