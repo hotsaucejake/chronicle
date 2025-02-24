@@ -24,10 +24,17 @@ class SpatieDocumentProjector extends Projector
     public function onSpatieDocumentEdited(SpatieDocumentEdited $event): void
     {
         $document = SpatieDocumentProjection::uuid($event->uuid)->writeable();
+
+        if (is_null($document->first_edit_user_id)) {
+            $document->update(['first_edit_user_id' => $event->editor_id]);
+        }
+
         $document->update([
             'content' => $event->new_content,
             'version' => $event->previous_version + 1,
-            'editor_id' => $event->editor_id,
+            'last_edit_user_id' => $event->editor_id,
+            'edit_count' => $document->edit_count + 1,
+            'last_edited_at' => now(),
         ]);
     }
 
