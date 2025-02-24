@@ -82,9 +82,9 @@ class VerbSnapshotResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListVerbSnapshots::route('/'),
-            'create' => Pages\CreateVerbSnapshot::route('/create'),
-            'edit' => Pages\EditVerbSnapshot::route('/{record}/edit'),
+            'index' => Pages\ListVerbsSnapshots::route('/'),
+            'create' => Pages\CreateVerbsSnapshot::route('/create'),
+            'edit' => Pages\EditVerbsSnapshot::route('/{record}/edit'),
         ];
     }
 }

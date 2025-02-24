@@ -2,7 +2,7 @@
 
 namespace App\Filament\Index\Resources;
 
-use App\Filament\Index\Resources\VerbEventResource\Pages;
+use App\Filament\Index\Resources\VerbsEventResource\Pages;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -12,7 +12,7 @@ use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Table;
 use Thunk\Verbs\Models\VerbEvent;
 
-class VerbEventResource extends Resource
+class VerbsEventResource extends Resource
 {
     protected static ?string $model = VerbEvent::class;
 
@@ -75,7 +75,7 @@ class VerbEventResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListVerbEvents::route('/'),
+            'index' => Pages\ListVerbsEvents::route('/'),
         ];
     }
 }

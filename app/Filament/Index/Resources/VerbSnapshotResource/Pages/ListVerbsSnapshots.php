@@ -4,16 +4,16 @@ namespace App\Filament\Index\Resources\VerbSnapshotResource\Pages;
 
 use App\Filament\Index\Resources\VerbSnapshotResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ListRecords;
 
-class EditVerbSnapshot extends EditRecord
+class ListVerbsSnapshots extends ListRecords
 {
     protected static string $resource = VerbSnapshotResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\CreateAction::make(),
         ];
     }
 }
