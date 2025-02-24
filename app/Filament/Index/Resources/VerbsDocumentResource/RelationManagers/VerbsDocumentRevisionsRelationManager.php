@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Filament\Index\Resources\DocumentResource\RelationManagers;
+namespace App\Filament\Index\Resources\VerbsDocumentResource\RelationManagers;
 
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class RevisionsRelationManager extends RelationManager
+class VerbsDocumentRevisionsRelationManager extends RelationManager
 {
-    protected static string $relationship = 'revisions';
+    protected static string $relationship = 'verbsDocumentRevisions';
 
     public function form(Form $form): Form
     {

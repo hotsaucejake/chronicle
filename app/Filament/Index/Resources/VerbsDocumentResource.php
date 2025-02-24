@@ -4,7 +4,7 @@ namespace App\Filament\Index\Resources;
 
 use App\Filament\Index\Resources\DocumentResource\Pages\EditDocument;
 use App\Filament\Index\Resources\DocumentResource\Pages\ListDocuments;
-use App\Filament\Index\Resources\DocumentResource\RelationManagers\RevisionsRelationManager;
+use App\Filament\Index\Resources\VerbsDocumentResource\RelationManagers\VerbsDocumentRevisionsRelationManager;
 use App\Models\VerbsDocument;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Form;
@@ -14,9 +14,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class DocumentResource extends Resource
+class VerbsDocumentResource extends Resource
 {
     protected static ?string $model = VerbsDocument::class;
+
+    protected static ?string $navigationGroup = 'Verbs';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-duplicate';
 
@@ -102,7 +104,7 @@ class DocumentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RevisionsRelationManager::class,
+            VerbsDocumentRevisionsRelationManager::class,
         ];
     }
 

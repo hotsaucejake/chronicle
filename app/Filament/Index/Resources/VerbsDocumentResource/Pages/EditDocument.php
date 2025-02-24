@@ -5,7 +5,7 @@ namespace App\Filament\Index\Resources\DocumentResource\Pages;
 use App\Contracts\Services\VerbsDocumentRevisionServiceInterface;
 use App\Events\Document\VerbsDocumentEditingBroadcast;
 use App\Events\Document\Verbs\VerbsDocumentEdited;
-use App\Filament\Index\Resources\DocumentResource;
+use App\Filament\Index\Resources\VerbsDocumentResource;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +13,7 @@ use Thunk\Verbs\Facades\Verbs;
 
 class EditDocument extends EditRecord
 {
-    protected static string $resource = DocumentResource::class;
+    protected static string $resource = VerbsDocumentResource::class;
 
     protected static string $view = 'filament.index.resources.document-resource.pages.edit-document';
 
