@@ -97,7 +97,6 @@ class VerbsDocumentResource extends Resource
                 Tables\Actions\EditAction::make()
                     ->visible(fn (VerbsDocument $record) => !$record->is_locked),
             ])
-            // TODO: make policy to prevent editing a locked document
             ->recordUrl(fn (VerbsDocument $record) => $record->is_locked ? null : EditDocument::getUrl([$record]));
     }
 
