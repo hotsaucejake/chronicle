@@ -25,6 +25,9 @@ return new class extends Migration
             $table->unsignedBigInteger('version')->default(1);
             $table->timestamp('last_edited_at')->nullable();
 
+            // column to hold an array of unique editor IDs
+            $table->json('editor_ids')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
         });

@@ -20,12 +20,19 @@ class SpatieDocumentAggregate extends AggregateRoot
     {
         $this->recordThat(new SpatieDocumentEdited($uuid, $newContent, $previousVersion, $editorId));
 
+        // let's create a snapshot after every 5 edits for educational purposes
+        if (($previousVersion + 1) % 5 === 0) {
+            $this->snapshot();
+        }
+
         return $this;
     }
 
     public function lockSpatieDocument(string $uuid): self
     {
         $this->recordThat(new SpatieDocumentLocked($uuid));
+
+        $this->snapshot();
 
         return $this;
     }

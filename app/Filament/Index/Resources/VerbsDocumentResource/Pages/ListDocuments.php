@@ -3,7 +3,6 @@
 namespace App\Filament\Index\Resources\VerbsDocumentResource\Pages;
 
 use App\Filament\Index\Resources\VerbsDocumentResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListDocuments extends ListRecords

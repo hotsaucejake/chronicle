@@ -2,25 +2,16 @@
 
 namespace App\Filament\Index\Resources;
 
-use App\Filament\Index\Resources\SpatieDocumentResource\Pages;
 use App\Filament\Index\Resources\SpatieDocumentResource\Pages\EditSpatieDocument;
 use App\Filament\Index\Resources\SpatieDocumentResource\Pages\ListSpatieDocuments;
-use App\Filament\Index\Resources\SpatieDocumentResource\RelationManagers;
-use App\Filament\Index\Resources\VerbsDocumentResource\Pages\EditDocument;
-use App\Models\SpatieDocument;
-use App\Models\VerbsDocument;
 use App\Projections\SpatieDocumentProjection;
-use Filament\Forms;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SpatieDocumentResource extends Resource
 {

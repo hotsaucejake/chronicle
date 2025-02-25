@@ -19,9 +19,7 @@ class SpatieDocumentEditingBroadcast implements ShouldBroadcastNow
     public function __construct(
         public string $uuid,
         public string $username
-    )
-    {
-    }
+    ) {}
 
     /**
      * Get the channels the event should broadcast on.

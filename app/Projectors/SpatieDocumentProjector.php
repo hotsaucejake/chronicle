@@ -13,10 +13,10 @@ class SpatieDocumentProjector extends Projector
 {
     public function onSpatieDocumentCreated(SpatieDocumentCreated $event): void
     {
-        // Ensure UUID is set
         if (empty($event->spatieDocumentAttributes['uuid'])) {
             $event->spatieDocumentAttributes['uuid'] = Uuid::uuid4()->toString();
         }
+
         $projection = SpatieDocumentProjection::createWithAttributes($event->spatieDocumentAttributes);
         $projection->save();
     }
@@ -29,12 +29,22 @@ class SpatieDocumentProjector extends Projector
             $document->update(['first_edit_user_id' => $event->editor_id]);
         }
 
+        // Decode the current list of editor IDs (or initialize as empty array)
+        $editorIds = $document->editor_ids ? json_decode($document->editor_ids, true) : [];
+
+        // Add the current editor if not already present.
+        if (!in_array($event->editor_id, $editorIds)) {
+            $editorIds[] = $event->editor_id;
+        }
+
         $document->update([
             'content' => $event->new_content,
             'version' => $event->previous_version + 1,
             'last_edit_user_id' => $event->editor_id,
             'edit_count' => $document->edit_count + 1,
             'last_edited_at' => now(),
+            'unique_editor_count' => count($editorIds),
+            'editor_ids' => json_encode($editorIds),
         ]);
     }
 

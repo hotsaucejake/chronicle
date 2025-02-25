@@ -3,7 +3,6 @@
 namespace App\Filament\Index\Resources\SpatieDocumentResource\Pages;
 
 use App\Filament\Index\Resources\SpatieDocumentResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListSpatieDocuments extends ListRecords

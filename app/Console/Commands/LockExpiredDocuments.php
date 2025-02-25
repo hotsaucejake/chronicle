@@ -60,6 +60,7 @@ class LockExpiredDocuments extends Command
                 } else {
                     if (empty($document->uuid)) {
                         $this->error("Document ID {$document->id} has an empty uuid");
+
                         return;
                     }
 
