@@ -4,6 +4,7 @@ namespace App\Projectors;
 
 use App\Events\Document\Spatie\SpatieDocumentCreated;
 use App\Events\Document\Spatie\SpatieDocumentEdited;
+use App\Events\Document\Spatie\SpatieDocumentExpirationExtended;
 use App\Events\Document\Spatie\SpatieDocumentLocked;
 use App\Projections\SpatieDocumentProjection;
 use Ramsey\Uuid\Uuid;
@@ -13,12 +14,7 @@ class SpatieDocumentProjector extends Projector
 {
     public function onSpatieDocumentCreated(SpatieDocumentCreated $event): void
     {
-        if (empty($event->spatieDocumentAttributes['uuid'])) {
-            $event->spatieDocumentAttributes['uuid'] = Uuid::uuid4()->toString();
-        }
-
-        $projection = SpatieDocumentProjection::createWithAttributes($event->spatieDocumentAttributes);
-        $projection->save();
+        (new SpatieDocumentProjection($event->spatieDocumentAttributes))->writeable()->save();
     }
 
     public function onSpatieDocumentEdited(SpatieDocumentEdited $event): void
@@ -45,6 +41,14 @@ class SpatieDocumentProjector extends Projector
             'last_edited_at' => now(),
             'unique_editor_count' => count($editorIds),
             'editor_ids' => json_encode($editorIds),
+        ]);
+    }
+
+    public function onSpatieDocumentExpirationExtended(SpatieDocumentExpirationExtended $event): void
+    {
+        $document = SpatieDocumentProjection::uuid($event->uuid)->writeable();
+        $document->update([
+            'expires_at' => $event->new_expires_at,
         ]);
     }
 

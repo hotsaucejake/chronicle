@@ -15,16 +15,4 @@ class SpatieDocumentProjection extends Projection
     {
         return static::where('uuid', $uuid)->firstOrFail();
     }
-
-    public static function createWithAttributes(array $attributes): self
-    {
-        // Ensure a valid UUID is set
-        $attributes['uuid'] = $attributes['uuid'] ?? Uuid::uuid4()->toString();
-
-        // Create a new instance
-        $model = new static($attributes);
-
-        // Convert it to a writeable instance before saving
-        return $model->writeable();
-    }
 }
