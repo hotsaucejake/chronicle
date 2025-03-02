@@ -54,9 +54,9 @@ class LockExpiredDocuments extends Command
                     $document->edit_count === 0
                 ) {
                     // Extend expiration if untouched.
-                    $document->update([
-                        'expires_at' => now()->addHours(Config::get('chronicle.document_expiration', 1)),
-                    ]);
+                    SpatieDocumentAggregate::retrieve($document->uuid)
+                        ->extendExpiration(now()->addHours(Config::get('chronicle.document_expiration', 1)))
+                        ->persist();
                 } else {
                     if (empty($document->uuid)) {
                         $this->error("Document ID {$document->id} has an empty uuid");
@@ -66,7 +66,7 @@ class LockExpiredDocuments extends Command
 
                     // Otherwise, lock the document via the aggregate.
                     SpatieDocumentAggregate::retrieve($document->uuid)
-                        ->lockSpatieDocument($document->uuid)
+                        ->lockSpatieDocument()
                         ->persist();
                 }
             });
@@ -79,18 +79,14 @@ class LockExpiredDocuments extends Command
         if ($livingCount === 0) {
             $this->info('No living Spatie documents found. Creating a new document for revision.');
 
-            $uuid = Uuid::uuid4()->toString();
-
             // Prepare default attributes from your config.
             $attributes = [
-                'uuid' => $uuid,
                 'content' => Config::get('chronicle.initial_document_text', 'New Content'),
                 'is_locked' => false,
                 'expires_at' => now()->addHours(Config::get('chronicle.document_expiration', 1)),
-                // You can set additional fields if needed.
             ];
 
-            SpatieDocumentAggregate::retrieve($uuid)
+            SpatieDocumentAggregate::retrieve(Uuid::uuid4()->toString())
                 ->createSpatieDocument($attributes)
                 ->persist();
         }
