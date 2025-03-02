@@ -29,7 +29,7 @@ class EditSpatieDocument extends EditRecord
 
         // Retrieve and update the aggregate for this document
         SpatieDocumentAggregate::retrieve($record->uuid)
-            ->editSpatieDocument($record->uuid, $newContent, $record->version, Auth::user()->id)
+            ->editSpatieDocument($newContent, $record->version, Auth::user()->id)
             ->persist();
 
         event(new SpatieDocumentEditedBroadcast(
