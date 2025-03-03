@@ -7,7 +7,6 @@ use App\Events\Document\Spatie\SpatieDocumentEdited;
 use App\Events\Document\Spatie\SpatieDocumentExpirationExtended;
 use App\Events\Document\Spatie\SpatieDocumentLocked;
 use App\Projections\SpatieDocumentProjection;
-use Ramsey\Uuid\Uuid;
 use Spatie\EventSourcing\EventHandlers\Projectors\Projector;
 
 class SpatieDocumentProjector extends Projector

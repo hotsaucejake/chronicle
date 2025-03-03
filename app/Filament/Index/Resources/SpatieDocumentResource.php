@@ -4,6 +4,7 @@ namespace App\Filament\Index\Resources;
 
 use App\Filament\Index\Resources\SpatieDocumentResource\Pages\EditSpatieDocument;
 use App\Filament\Index\Resources\SpatieDocumentResource\Pages\ListSpatieDocuments;
+use App\Filament\Index\Resources\SpatieDocumentResource\RelationManagers\SnapshotsRelationManager;
 use App\Projections\SpatieDocumentProjection;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Form;
@@ -92,7 +93,7 @@ class SpatieDocumentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SnapshotsRelationManager::class,
         ];
     }
 
